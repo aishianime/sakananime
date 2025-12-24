@@ -8,7 +8,7 @@ export const Footer = () => {
           {/* Brand */}
           <div className="space-y-3">
             <h3 className="text-lg font-bold bg-gradient-primary bg-clip-text text-transparent">
-              DonghuaK!ta
+              Sakanan!me
             </h3>
             <p className="text-sm text-muted-foreground">
               Your premier destination for watching Chinese animation (Donghua) with subtitle Indonesia.
@@ -51,6 +51,20 @@ export const Footer = () => {
                   By Year
                 </Link>
               </li>
+            </link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Browse */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold">Sosial media</h4>
+            <ul className="space-y-2 text-sm">
+               <li>
+                <Link to="https://sociabuzz.com/rizaxshanachan/tribe" className="text-muted-foreground hover:text-primary transition-colors">
+                  Donate
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -58,14 +72,14 @@ export const Footer = () => {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold">About</h4>
             <p className="text-sm text-muted-foreground">
-              DonghuaK!ta provides free streaming of Chinese animation with Indonesian subtitles. All content belongs to their respective owners.
+              Sakanan!me provides free streaming of Chinese animation with Indonesian subtitles. All content belongs to their respective owners.
             </p>
           </div>
         </div>
 
         <div className="border-t mt-8 pt-6 text-center">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} DonghuaK!ta. All rights reserved.
+            © {new Date().getFullYear()} Sakanan!me All rights reserved.
           </p>
         </div>
       </div>
