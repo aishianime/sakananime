@@ -70,6 +70,11 @@ export const comicApi = {
     return response.json();
   },
 
+  getDetail: async (slug: string) => {
+    const response = await fetch(`${BASE_URL}/comic/bacakomik/detail/${slug}`);
+    return response.json();
+  },
+
   getKomikBerwarna: async (page: number = 1) => {
     const response = await fetch(`${BASE_URL}/comic/bacakomik/komikberwarna/${page}`);
     return response.json();
