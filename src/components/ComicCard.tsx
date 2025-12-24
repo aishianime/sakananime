@@ -14,7 +14,7 @@ interface ComicCardProps {
 
 export const ComicCard = ({ title, slug, cover, chapter, date, type, rating }: ComicCardProps) => {
   return (
-    <Link to={`/comic/search/${slug}`} className="group block">
+    <Link to={`/comic/bacakomik/detail/${slug}`} className="group block">
       <div className="relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02]">
         <div className="aspect-[3/4] overflow-hidden">
           <img
