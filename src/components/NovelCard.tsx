@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Star, Eye, BookOpen } from 'lucide-react';
 
 interface NovelCardProps {
-  novelId: number;
+  slug: number;
   title: string;
   cover: { url: string };
   score?: string;
@@ -14,7 +14,7 @@ interface NovelCardProps {
 
 export const NovelCard = ({ novelId, title, cover, score, totalViews, totalChapters, genres }: NovelCardProps) => {
   return (
-    <Link to={`/novel/detail/${novelId}`} className="group block">
+    <Link to={`/novel/meionovel/detail/${slug}`} className="group block">
       <div className="relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02]">
         <div className="aspect-[3/4] overflow-hidden">
           <img
