@@ -26,6 +26,24 @@ import AnimeDetail from "./pages/anime/AnimeDetail";
 import AnimeEpisode from "./pages/anime/AnimeEpisode";
 import AnimeSearch from "./pages/anime/AnimeSearch";
 
+// Comic pages
+import ComicHome from "./pages/comic/ComicHome";
+import ComicGenres from "./pages/comic/ComicGenres";
+import ComicByGenre from "./pages/comic/ComicByGenre";
+import ComicByType from "./pages/comic/ComicByType";
+import ComicSearch from "./pages/comic/ComicSearch";
+
+// News pages
+import NewsHome from "./pages/news/NewsHome";
+import NewsRubrik from "./pages/news/NewsRubrik";
+import NewsDetail from "./pages/news/NewsDetail";
+import NewsSearch from "./pages/news/NewsSearch";
+
+// Novel pages
+import NovelHome from "./pages/novel/NovelHome";
+import NovelGenre from "./pages/novel/NovelGenre";
+import NovelSearch from "./pages/novel/NovelSearch";
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -77,6 +95,24 @@ const App = () => {
                 <Route path="/anime/detail/:slug" element={<AnimeDetail />} />
                 <Route path="/anime/episode/:slug" element={<AnimeEpisode />} />
                 <Route path="/anime/search/:keyword" element={<AnimeSearch />} />
+
+                {/* Comic Routes */}
+                <Route path="/comic" element={<ComicHome />} />
+                <Route path="/comic/genres" element={<ComicGenres />} />
+                <Route path="/comic/genre/:slug" element={<ComicByGenre />} />
+                <Route path="/comic/type/:type" element={<ComicByType />} />
+                <Route path="/comic/search/:query" element={<ComicSearch />} />
+
+                {/* News Routes */}
+                <Route path="/news" element={<NewsHome />} />
+                <Route path="/news/rubrik/:rubrik" element={<NewsRubrik />} />
+                <Route path="/news/detail/:id/:slug" element={<NewsDetail />} />
+                <Route path="/news/search/:query" element={<NewsSearch />} />
+
+                {/* Novel Routes */}
+                <Route path="/novel" element={<NovelHome />} />
+                <Route path="/novel/genre/:genreId" element={<NovelGenre />} />
+                <Route path="/novel/search/:keyword" element={<NovelSearch />} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
