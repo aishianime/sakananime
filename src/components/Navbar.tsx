@@ -37,14 +37,17 @@ export const Navbar = () => {
             <Link to="/anime" className="text-sm font-medium hover:text-primary transition-colors">
               Anime
             </Link>
+            <Link to="/comic" className="text-sm font-medium hover:text-primary transition-colors">
+              Comic
+            </Link>
+            <Link to="/novel" className="text-sm font-medium hover:text-primary transition-colors">
+              Novel
+            </Link>
+            <Link to="/news" className="text-sm font-medium hover:text-primary transition-colors">
+              Berita
+            </Link>
             <Link to="/anime/schedule" className="text-sm font-medium hover:text-primary transition-colors">
               Schedule
-            </Link>
-            <Link to="/ongoing" className="text-sm font-medium hover:text-primary transition-colors">
-              Ongoing
-            </Link>
-            <Link to="/genres" className="text-sm font-medium hover:text-primary transition-colors">
-              Genres
             </Link>
           </div>
 
@@ -52,10 +55,10 @@ export const Navbar = () => {
           <form onSubmit={handleSearch} className="hidden md:flex items-center space-x-2">
             <Input
               type="text"
-              placeholder="Search donghua..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-64"
+              className="w-48"
             />
             <Button type="submit" size="icon" variant="default">
               <Search className="h-4 w-4" />
@@ -79,7 +82,7 @@ export const Navbar = () => {
             <form onSubmit={handleSearch} className="flex items-center space-x-2">
               <Input
                 type="text"
-                placeholder="Search donghua..."
+                placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -103,25 +106,32 @@ export const Navbar = () => {
                 Anime
               </Link>
               <Link
+                to="/comic"
+                className="text-sm font-medium hover:text-primary transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Comic
+              </Link>
+              <Link
+                to="/novel"
+                className="text-sm font-medium hover:text-primary transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Novel
+              </Link>
+              <Link
+                to="/news"
+                className="text-sm font-medium hover:text-primary transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Berita
+              </Link>
+              <Link
                 to="/anime/schedule"
                 className="text-sm font-medium hover:text-primary transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Schedule
-              </Link>
-              <Link
-                to="/ongoing"
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Ongoing
-              </Link>
-              <Link
-                to="/genres"
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Genres
               </Link>
             </div>
           </div>
