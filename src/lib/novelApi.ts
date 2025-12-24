@@ -1,7 +1,7 @@
 const BASE_URL = 'https://www.sankavollerei.com';
 
 export interface NovelCard {
-  novelId: number;
+  slug: number;
   novelType: number;
   title: string;
   cover: {
