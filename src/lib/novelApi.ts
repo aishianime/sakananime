@@ -1,7 +1,7 @@
 const BASE_URL = 'https://www.sankavollerei.com';
 
 export interface NovelCard {
-  slug: number;
+  novelld: number;
   novelType: number;
   title: string;
   cover: {
@@ -24,22 +24,22 @@ export interface NovelGenre {
 
 export const novelApi = {
   getHome: async () => {
-    const response = await fetch(`${BASE_URL}/novel/home`);
+    const response = await fetch(`${BASE_URL}/novel/meionovel/home`);
     return response.json();
   },
 
   search: async (query: string) => {
-    const response = await fetch(`${BASE_URL}/novel/meionovel/search?q=${query}`);
+    const response = await fetch(`${BASE_URL}/novel/search?q=${query}`);
     return response.json();
   },
 
-  getByGenre: async (slug: string) => {
-    const response = await fetch(`${BASE_URL}/novel/meionovel/genre/${slug}`);
+  getByGenre: async (keyword: string) => {
+    const response = await fetch(`${BASE_URL}/novel/meionovel/genre/${keyword}`);
     return response.json();
   },
 
   getChapters: async (slug: string) => {
-    const response = await fetch(`${BASE_URL}/novel/meionovel/chapter/${slug}/${slug}`);
+    const response = await fetch(`${BASE_URL}/novel/chapters/${novelld}`);
     return response.json();
   },
   
