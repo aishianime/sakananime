@@ -18,7 +18,7 @@ export interface NovelCard {
 }
 
 export interface NovelGenre {
-  genreId: string;
+  slug: string;
   name: string;
 }
 
@@ -28,18 +28,24 @@ export const novelApi = {
     return response.json();
   },
 
-  search: async (keyword: string) => {
-    const response = await fetch(`${BASE_URL}/novel/search?q=${keyword}`);
+  search: async (query: string) => {
+    const response = await fetch(`${BASE_URL}/novel/meionovel/search?q=${query}`);
     return response.json();
   },
 
-  getByGenre: async (genreId: string) => {
-    const response = await fetch(`${BASE_URL}/novel/genre/${genreId}`);
+  getByGenre: async (slug: string) => {
+    const response = await fetch(`${BASE_URL}/novel/meionovel/genre/${slug}`);
     return response.json();
   },
 
-  getChapters: async (novelId: string) => {
-    const response = await fetch(`${BASE_URL}/novel/chapters/${novelId}`);
+  getChapters: async (slug: string) => {
+    const response = await fetch(`${BASE_URL}/novel/meionovel/chapter/${slug}/${slug}`);
+    return response.json();
+  },
+  
+};
+getDetail: async (slug: string) => {
+    const response = await fetch(`${BASE_URL}/novel/meionovel/detail/${slug}`);
     return response.json();
   },
 };
