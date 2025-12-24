@@ -17,6 +17,15 @@ import Detail from "./pages/Detail";
 import Episode from "./pages/Episode";
 import NotFound from "./pages/NotFound";
 
+// Anime pages
+import AnimeHome from "./pages/anime/AnimeHome";
+import AnimeOngoing from "./pages/anime/AnimeOngoing";
+import AnimeCompleted from "./pages/anime/AnimeCompleted";
+import AnimeSchedule from "./pages/anime/AnimeSchedule";
+import AnimeDetail from "./pages/anime/AnimeDetail";
+import AnimeEpisode from "./pages/anime/AnimeEpisode";
+import AnimeSearch from "./pages/anime/AnimeSearch";
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -59,6 +68,16 @@ const App = () => {
                 <Route path="/by-year" element={<ByYear />} />
                 <Route path="/detail/:slug" element={<Detail />} />
                 <Route path="/episode/:slug" element={<Episode />} />
+                
+                {/* Anime Routes */}
+                <Route path="/anime" element={<AnimeHome />} />
+                <Route path="/anime/ongoing" element={<AnimeOngoing />} />
+                <Route path="/anime/completed" element={<AnimeCompleted />} />
+                <Route path="/anime/schedule" element={<AnimeSchedule />} />
+                <Route path="/anime/detail/:slug" element={<AnimeDetail />} />
+                <Route path="/anime/episode/:slug" element={<AnimeEpisode />} />
+                <Route path="/anime/search/:keyword" element={<AnimeSearch />} />
+                
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

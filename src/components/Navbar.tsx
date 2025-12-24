@@ -32,19 +32,19 @@ export const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
-              Home
+              Donghua
+            </Link>
+            <Link to="/anime" className="text-sm font-medium hover:text-primary transition-colors">
+              Anime
+            </Link>
+            <Link to="/anime/schedule" className="text-sm font-medium hover:text-primary transition-colors">
+              Schedule
             </Link>
             <Link to="/ongoing" className="text-sm font-medium hover:text-primary transition-colors">
               Ongoing
             </Link>
-            <Link to="/completed" className="text-sm font-medium hover:text-primary transition-colors">
-              Completed
-            </Link>
             <Link to="/genres" className="text-sm font-medium hover:text-primary transition-colors">
               Genres
-            </Link>
-            <Link to="/by-year" className="text-sm font-medium hover:text-primary transition-colors">
-              By Year
             </Link>
           </div>
 
@@ -93,7 +93,21 @@ export const Navbar = () => {
                 className="text-sm font-medium hover:text-primary transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Home
+                Donghua
+              </Link>
+              <Link
+                to="/anime"
+                className="text-sm font-medium hover:text-primary transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Anime
+              </Link>
+              <Link
+                to="/anime/schedule"
+                className="text-sm font-medium hover:text-primary transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Schedule
               </Link>
               <Link
                 to="/ongoing"
@@ -103,25 +117,11 @@ export const Navbar = () => {
                 Ongoing
               </Link>
               <Link
-                to="/completed"
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Completed
-              </Link>
-              <Link
                 to="/genres"
                 className="text-sm font-medium hover:text-primary transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Genres
-              </Link>
-              <Link
-                to="/by-year"
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                By Year
               </Link>
             </div>
           </div>
