@@ -3,6 +3,8 @@
 ## Project info
 
 **URL**: https://lovable.dev/projects/04f95f79-6b89-4066-89f1-89fc0f726335
+**REMIX**: https://lovable.dev/projects/54dbd231-38cc-4b36-8b09-0877075e3384
+
 
 ## How can I edit this code?
 
