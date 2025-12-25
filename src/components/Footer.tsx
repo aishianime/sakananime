@@ -51,8 +51,6 @@ export const Footer = () => {
                   By Year
                 </Link>
               </li>
-            </link>
-              </li>
             </ul>
           </div>
 
