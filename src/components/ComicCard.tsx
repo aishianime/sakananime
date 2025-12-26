@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Star } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 interface ComicCardProps {
   title: string;
@@ -11,7 +10,7 @@ interface ComicCardProps {
   date?: string;
   type?: string;
   rating?: string;
-  className?: string;
+  isLoading?: boolean;
 }
 
 export const ComicCard = ({ 
@@ -21,71 +20,78 @@ export const ComicCard = ({
   chapter, 
   date, 
   type, 
-  rating,
-  className 
+  rating, 
+  isLoading = false 
 }: ComicCardProps) => {
+  
+  if (isLoading) {
+    return (
+      <div className="animate-pulse">
+        <div className="aspect-[3/4] rounded-lg bg-muted mb-2" />
+        <div className="h-4 bg-muted rounded w-3/4 mb-2" />
+        <div className="flex gap-2">
+          <div className="h-5 bg-muted rounded w-16" />
+          <div className="h-5 bg-muted rounded w-12" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Link 
       to={`/comic/bacakomik/detail/${slug}`} 
-      className={cn("group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", className)}
-      aria-label={`Baca komik ${title}`}
+      className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:rounded-lg"
+      aria-label={`Baca ${title} - ${chapter || 'komik terbaru'}`}
     >
       <div className="relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] active:scale-[0.99]">
         {/* Cover Image */}
-        <div className="aspect-[3/4] overflow-hidden relative">
+        <div className="aspect-[3/4] overflow-hidden">
           <img
             src={cover}
-            alt={title}
+            alt={`Cover komik ${title}`}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
             loading="lazy"
-            decoding="async"
             onError={(e) => {
-              e.currentTarget.src = '/placeholder-comic.jpg';
-              e.currentTarget.alt = `Gambar tidak tersedia untuk ${title}`;
+              e.currentTarget.src = '/images/placeholder-comic.jpg';
+              e.currentTarget.alt = 'Cover tidak tersedia';
             }}
           />
-          {/* Fallback overlay while loading */}
-          <div className="absolute inset-0 bg-muted animate-pulse" aria-hidden="true" />
         </div>
         
         {/* Gradient Overlay */}
-        <div 
-          className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" 
-          aria-hidden="true"
-        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
         
         {/* Content */}
-        <div className="absolute bottom-0 left-0 right-0 p-3">
-          <h3 className="text-sm font-semibold text-white line-clamp-2 mb-1 leading-tight">
+        <div className="absolute bottom-0 left-0 right-0 p-3 space-y-2">
+          {/* Title */}
+          <h3 className="text-sm font-semibold text-white line-clamp-2 leading-tight">
             {title}
           </h3>
           
-          <div className="flex items-center gap-2 flex-wrap mb-1">
-            {/* Type Badge */}
+          {/* Badges */}
+          <div className="flex items-center gap-2 flex-wrap">
             {type && (
               <Badge 
                 variant="secondary" 
-                className="text-xs capitalize font-medium max-w-[80px] truncate"
+                className="text-xs capitalize max-w-[100px] truncate"
                 title={type}
               >
                 {type}
               </Badge>
             )}
             
-            {/* Chapter Badge */}
             {chapter && (
               <Badge 
                 variant="outline" 
-                className="text-xs text-white border-white/50 bg-black/40 backdrop-blur-sm"
+                className="text-xs text-white border-white/30 bg-black/20 backdrop-blur-sm"
               >
                 {chapter}
               </Badge>
             )}
             
-            {/* Rating */}
             {rating && (
-              <div className="flex items-center gap-1 ml-auto">
-                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" aria-hidden="true" />
+              <div className="flex items-center gap-1 ml-auto bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full">
+                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                 <span className="text-xs text-white font-medium">{rating}</span>
               </div>
             )}
@@ -93,17 +99,11 @@ export const ComicCard = ({
           
           {/* Date */}
           {date && (
-            <p className="text-xs text-gray-300/90 mt-1 font-medium">
+            <p className="text-xs text-gray-300/90 font-medium">
               {date}
             </p>
           )}
         </div>
-        
-        {/* Hover Effect Indicator */}
-        <div 
-          className="absolute inset-0 border-2 border-transparent group-hover:border-primary/30 rounded-lg transition-colors duration-300 pointer-events-none" 
-          aria-hidden="true"
-        />
       </div>
     </Link>
   );
