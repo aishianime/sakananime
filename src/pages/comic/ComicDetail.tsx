@@ -106,7 +106,7 @@ const ComicDetail = () => {
             {/* Genres */}
             <div className="flex flex-wrap gap-2">
               {detail.genres?.map((genre: { title: string; slug: string }) => (
-                <Link key={genre.slug} to={`/comic/genre/${genre.slug}`}>
+                <Link key={genre.slug} to={`/comic/bacakomik/genre/${genre.slug}`}>
                   <Badge variant="outline" className="hover:bg-primary hover:text-primary-foreground cursor-pointer transition-colors">
                     {genre.title}
                   </Badge>
@@ -140,7 +140,7 @@ const ComicDetail = () => {
                 {detail.chapters?.map((chapter: { title: string; slug: string; date: string }) => (
                   <Link
                     key={chapter.slug}
-                    to={`/comic/chapter/${chapter.slug}`}
+                    to={`/comic/bacakomik/chapter/${chapter.slug}`}
                     className="block"
                   >
                     <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors">
