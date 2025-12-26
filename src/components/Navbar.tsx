@@ -46,9 +46,6 @@ export const Navbar = () => {
             <Link to="/news" className="text-sm font-medium hover:text-primary transition-colors">
               Berita
             </Link>
-            <Link to="/anime/schedule" className="text-sm font-medium hover:text-primary transition-colors">
-              Schedule
-            </Link>
           </div>
 
           {/* Search Bar - Desktop */}
@@ -125,13 +122,6 @@ export const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Berita
-              </Link>
-              <Link
-                to="/anime/schedule"
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Schedule
               </Link>
             </div>
           </div>
