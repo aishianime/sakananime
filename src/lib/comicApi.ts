@@ -71,7 +71,7 @@ export const comicApi = {
   },
 
   getDetail: async (slug: string) => {
-    const response = await fetch(`${BASE_URL}/comic/comic/${slug}`);
+    const response = await fetch(`${BASE_URL}/comic/bacakomik/detail/${slug}`);
     return response.json();
   },
 
