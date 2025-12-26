@@ -43,6 +43,15 @@ import NewsSearch from "./pages/news/NewsSearch";
 import NovelHome from "./pages/novel/NovelHome";
 import NovelGenre from "./pages/novel/NovelGenre";
 import NovelSearch from "./pages/novel/NovelSearch";
+import NovelDetail from "./pages/novel/NovelDetail";
+import NovelChapter from "./pages/novel/NovelChapter";
+import NovelGenres from "./pages/novel/NovelGenres";
+import NovelPopular from "./pages/novel/NovelPopular";
+import NovelLatest from "./pages/novel/NovelLatest";
+
+// Comic detail pages
+import ComicDetail from "./pages/comic/ComicDetail";
+import ComicChapter from "./pages/comic/ComicChapter";
 
 const queryClient = new QueryClient();
 
