@@ -66,8 +66,8 @@ export const novelApi = {
     return response.json();
   },
 
-  getChapter: async (novelSlug: string, chapterSlug: string) => {
-    const response = await fetch(`${BASE_URL}/novel/meionovel/chapter/${novelSlug}/${chapterSlug}`);
+  getChapter: async (slug: string, slug: string) => {
+    const response = await fetch(`${BASE_URL}/novel/meionovel/chapter/${slug}/${slug}`);
     return response.json();
   },
 
