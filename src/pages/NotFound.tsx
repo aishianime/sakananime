@@ -29,18 +29,6 @@ const NotFound = () => {
               <Home className="mr-2 h-4 w-4" />
               Back to Home
             </Button>
-          </Link>
-          <Link to="/search/donghua">
-            <Button size="lg" variant="outline">
-              <Search className="mr-2 h-4 w-4" />
-              Search Donghua
-            </Button>
-          </Link>
-           <Link to="/anime/schedule">
-            <Button size="lg" variant="outline">
-              <Search className="mr-2 h-4 w-4" />
-              anime rilis
-            </Button>
            </Link>
              <Link to="https://sociabuzz.com/rizaxshanachan/tribe">
             <Button size="lg" variant="outline">
