@@ -36,9 +36,9 @@ const ComicChapter = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft' && data?.navigation?.prev?.slug) {
-        navigate(`/comic/chapter/${data.navigation.prev.slug}`);
+        navigate(`/comic/bacakomik/chapter/${data.navigation.prev.slug}`);
       } else if (e.key === 'ArrowRight' && data?.navigation?.next?.slug) {
-        navigate(`/comic/chapter/${data.navigation.next.slug}`);
+        navigate(`/comic/bacakomik/chapter/${data.navigation.next.slug}`);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -88,7 +88,7 @@ const ComicChapter = () => {
 
             <div className="flex items-center gap-2">
               {data.navigation?.prev?.slug && (
-                <Link to={`/comic/chapter/${data.navigation.prev.slug}`}>
+                <Link to={`/comic/bacakomik/chapter/${data.navigation.prev.slug}`}>
                   <Button variant="outline" size="sm">
                     <ChevronLeft className="h-4 w-4" />
                     <span className="hidden sm:inline ml-1">Prev</span>
@@ -96,7 +96,7 @@ const ComicChapter = () => {
                 </Link>
               )}
               {data.navigation?.next?.slug && (
-                <Link to={`/comic/chapter/${data.navigation.next.slug}`}>
+                <Link to={`/comic/bacakomik/chapter/${data.navigation.next.slug}`}>
                   <Button variant="outline" size="sm">
                     <span className="hidden sm:inline mr-1">Next</span>
                     <ChevronRight className="h-4 w-4" />
@@ -127,7 +127,7 @@ const ComicChapter = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur border-t p-4">
         <div className="container mx-auto flex items-center justify-between">
           {data.navigation?.prev?.slug ? (
-            <Link to={`/comic/chapter/${data.navigation.prev.slug}`}>
+            <Link to={`/comic/bacakomik/chapter/${data.navigation.prev.slug}`}>
               <Button variant="default">
                 <ChevronLeft className="h-4 w-4 mr-1" />
                 Previous
@@ -145,7 +145,7 @@ const ComicChapter = () => {
           </Link>
 
           {data.navigation?.next?.slug ? (
-            <Link to={`/comic/chapter/${data.navigation.next.slug}`}>
+            <Link to={`/comic/bacakomik/chapter/${data.navigation.next.slug}`}>
               <Button variant="default">
                 Next
                 <ChevronRight className="h-4 w-4 ml-1" />
