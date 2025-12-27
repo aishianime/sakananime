@@ -109,8 +109,13 @@ const App = () => {
                 <Route path="/comic" element={<ComicHome />} />
                 <Route path="/comic/genres" element={<ComicGenres />} />
                 <Route path="/comic/genre/:slug" element={<ComicByGenre />} />
+                <Route path="/comic/bacakomik/genre/:slug" element={<ComicByGenre />} />
                 <Route path="/comic/type/:type" element={<ComicByType />} />
                 <Route path="/comic/search/:query" element={<ComicSearch />} />
+                <Route path="/comic/detail/:slug" element={<ComicDetail />} />
+                <Route path="/comic/bacakomik/detail/:slug" element={<ComicDetail />} />
+                <Route path="/comic/chapter/:slug" element={<ComicChapter />} />
+                <Route path="/comic/bacakomik/chapter/:slug" element={<ComicChapter />} />
 
                 {/* News Routes */}
                 <Route path="/news" element={<NewsHome />} />
@@ -121,7 +126,13 @@ const App = () => {
                 {/* Novel Routes */}
                 <Route path="/novel" element={<NovelHome />} />
                 <Route path="/novel/genre/:genreId" element={<NovelGenre />} />
+                <Route path="/novel/genres" element={<NovelGenres />} />
+                <Route path="/novel/popular" element={<NovelPopular />} />
+                <Route path="/novel/latest" element={<NovelLatest />} />
                 <Route path="/novel/search/:keyword" element={<NovelSearch />} />
+                <Route path="/novel/detail/:slug" element={<NovelDetail />} />
+                <Route path="/novel/meionovel/detail/:slug" element={<NovelDetail />} />
+                <Route path="/novel/read/:novelSlug/:chapterSlug" element={<NovelChapter />} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
