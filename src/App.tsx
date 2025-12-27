@@ -132,7 +132,7 @@ const App = () => {
                 <Route path="/novel/search/:keyword" element={<NovelSearch />} />
                 <Route path="/novel/detail/:slug" element={<NovelDetail />} />
                 <Route path="/novel/meionovel/detail/:slug" element={<NovelDetail />} />
-                <Route path="/novel/read/:novelSlug/:chapterSlug" element={<NovelChapter />} />
+                <Route path="/novel/chapter/:novelSlug/:chapterSlug" element={<NovelChapter />} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
