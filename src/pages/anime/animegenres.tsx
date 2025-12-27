@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api, Genre } from '@/lib/animeApi';
+import { animeApi, Genre } from '@/lib/animeApi';
 import { Button } from '@/components/ui/button';
 
 export default function Genres() {
@@ -11,7 +11,7 @@ export default function Genres() {
     const fetchGenres = async () => {
       try {
         setLoading(true);
-        const data = await api.getGenres();
+        const data = await animeApi.getGenres();
         setGenres(data.data || []);
       } catch (error) {
         console.error('Error fetching genres:', error);
