@@ -1,6 +1,17 @@
 const BASE_URL = 'https://www.sankavollerei.com';
 
 // Anime Types
+export interface Genre {
+  name: string;
+  slug: string;
+  href?: string;
+}
+
+export interface GenreResponse {
+  status: string;
+  data: Genre[];
+}
+
 export interface AnimeCard {
   title: string;
   poster: string;
@@ -191,6 +202,16 @@ export const animeApi = {
 
   search: async (keyword: string): Promise<AnimeListResponse> => {
     const response = await fetch(`${BASE_URL}/anime/search/${keyword}`);
+    return response.json();
+  },
+
+  getGenres: async (): Promise<GenreResponse> => {
+    const response = await fetch(`${BASE_URL}/anime/genres`);
+    return response.json();
+  },
+
+  getByGenre: async (slug: string, page: number = 1): Promise<AnimeListResponse> => {
+    const response = await fetch(`${BASE_URL}/anime/genres/${slug}?page=${page}`);
     return response.json();
   },
 };
