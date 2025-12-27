@@ -25,7 +25,6 @@ import AnimeSchedule from "./pages/anime/AnimeSchedule";
 import AnimeDetail from "./pages/anime/AnimeDetail";
 import AnimeEpisode from "./pages/anime/AnimeEpisode";
 import AnimeSearch from "./pages/anime/AnimeSearch";
-import Animegenres from "./pages/anime/animegenres";
 
 // Comic pages
 import ComicHome from "./pages/comic/ComicHome";
@@ -102,7 +101,6 @@ const App = () => {
                 <Route path="/anime/ongoing" element={<AnimeOngoing />} />
                 <Route path="/anime/completed" element={<AnimeCompleted />} />
                 <Route path="/anime/schedule" element={<AnimeSchedule />} />
-                <Route path="/anime/genres" element={<Animegenres />} />
                 <Route path="/anime/detail/:slug" element={<AnimeDetail />} />
                 <Route path="/anime/episode/:slug" element={<AnimeEpisode />} />
                 <Route path="/anime/search/:keyword" element={<AnimeSearch />} />
