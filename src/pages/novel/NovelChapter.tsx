@@ -76,14 +76,14 @@ const NovelChapter = () => {
                 <Settings className="h-4 w-4" />
               </Button>
               {data.navigation?.prev && (
-                <Link to={`/novel/read/${novelSlug}/${data.navigation.prev}`}>
+                <Link to={`/novel/chapter/${novelSlug}/${data.navigation.prev}`}>
                   <Button variant="outline" size="sm">
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
                 </Link>
               )}
               {data.navigation?.next && (
-                <Link to={`/novel/read/${novelSlug}/${data.navigation.next}`}>
+                <Link to={`/novel/chapter/${novelSlug}/${data.navigation.next}`}>
                   <Button variant="outline" size="sm">
                     <ChevronRight className="h-4 w-4" />
                   </Button>
@@ -153,7 +153,7 @@ const NovelChapter = () => {
       <div className="sticky bottom-0 bg-card/95 backdrop-blur border-t p-4">
         <div className="container mx-auto flex items-center justify-between max-w-3xl">
           {data.navigation?.prev ? (
-            <Link to={`/novel/read/${novelSlug}/${data.navigation.prev}`}>
+            <Link to={`/novel/chapter/${novelSlug}/${data.navigation.prev}`}>
               <Button variant="default">
                 <ChevronLeft className="h-4 w-4 mr-1" />
                 Previous
@@ -171,7 +171,7 @@ const NovelChapter = () => {
           </Link>
 
           {data.navigation?.next ? (
-            <Link to={`/novel/read/${novelSlug}/${data.navigation.next}`}>
+            <Link to={`/novel/chapter/${novelSlug}/${data.navigation.next}`}>
               <Button variant="default">
                 Next
                 <ChevronRight className="h-4 w-4 ml-1" />
