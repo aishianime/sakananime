@@ -6,12 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight, Home, List, Settings, Minus, Plus } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useReadingHistory } from '@/hooks/useReadingHistory';
 
 const NovelChapter = () => {
   const { novelSlug, chapterSlug } = useParams<{ novelSlug: string; chapterSlug: string }>();
   const navigate = useNavigate();
   const [fontSize, setFontSize] = useState(18);
   const [showSettings, setShowSettings] = useState(false);
+  const { addToHistory } = useReadingHistory();
 
   const { data, isLoading } = useQuery({
     queryKey: ['novel-chapter', novelSlug, chapterSlug],
@@ -29,6 +31,20 @@ const NovelChapter = () => {
   useEffect(() => {
     localStorage.setItem('novel-font-size', String(fontSize));
   }, [fontSize]);
+
+  // Track reading history
+  useEffect(() => {
+    if (data?.title && novelSlug && chapterSlug) {
+      addToHistory({
+        type: 'novel',
+        slug: novelSlug,
+        title: data.title.replace(/Chapter.*$/i, '').trim() || novelSlug,
+        cover: '',
+        lastChapter: data.title,
+        lastChapterSlug: chapterSlug,
+      });
+    }
+  }, [data, novelSlug, chapterSlug, addToHistory]);
 
   if (isLoading) return <LoadingSkeleton />;
 

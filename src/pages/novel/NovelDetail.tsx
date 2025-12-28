@@ -6,10 +6,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Star, BookOpen, User, Palette, Calendar, Clock, BookOpenCheck } from 'lucide-react';
+import { Star, BookOpen, User, Palette, Calendar, Clock, BookOpenCheck, Heart } from 'lucide-react';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useReadingHistory } from '@/hooks/useReadingHistory';
 
 const NovelDetail = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const { getLastRead } = useReadingHistory();
 
   const { data, isLoading } = useQuery({
     queryKey: ['novel-detail', slug],
@@ -24,6 +28,20 @@ const NovelDetail = () => {
 
   // Parse image URL (handle srcset format)
   const imageUrl = detail.image?.split(' ')[0] || detail.image;
+  
+  const isCurrentFavorite = isFavorite('novel', slug!);
+  const lastRead = getLastRead('novel', slug!);
+
+  const handleFavoriteClick = () => {
+    toggleFavorite({
+      type: 'novel',
+      slug: slug!,
+      title: detail.title,
+      cover: imageUrl,
+      rating: detail.rating,
+      status: detail.status,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -52,7 +70,17 @@ const NovelDetail = () => {
 
           {/* Info Section */}
           <div className="flex-1 space-y-4">
-            <h1 className="text-2xl md:text-4xl font-bold">{detail.title}</h1>
+            <div className="flex items-start justify-between gap-4">
+              <h1 className="text-2xl md:text-4xl font-bold">{detail.title}</h1>
+              <Button
+                variant={isCurrentFavorite ? "default" : "outline"}
+                size="icon"
+                onClick={handleFavoriteClick}
+                className="flex-shrink-0"
+              >
+                <Heart className={`h-5 w-5 ${isCurrentFavorite ? 'fill-current' : ''}`} />
+              </Button>
+            </div>
 
             <div className="flex flex-wrap gap-2">
               {detail.rating && detail.rating !== 'N/A' && (
@@ -115,12 +143,22 @@ const NovelDetail = () => {
 
             {/* Read First Chapter Button */}
             {detail.chapters && detail.chapters.length > 0 && (
-              <Link to={`/novel/read/${slug}/${detail.chapters[detail.chapters.length - 1].slug}`}>
-                <Button size="lg" className="gap-2">
-                  <BookOpenCheck className="h-5 w-5" />
-                  Start Reading
-                </Button>
-              </Link>
+              <div className="flex flex-wrap gap-2">
+                <Link to={`/novel/read/${slug}/${detail.chapters[detail.chapters.length - 1].slug}`}>
+                  <Button size="lg" className="gap-2">
+                    <BookOpenCheck className="h-5 w-5" />
+                    Start Reading
+                  </Button>
+                </Link>
+                {lastRead?.lastChapterSlug && (
+                  <Link to={`/novel/read/${slug}/${lastRead.lastChapterSlug}`}>
+                    <Button size="lg" variant="secondary" className="gap-2">
+                      <BookOpen className="h-5 w-5" />
+                      Continue: {lastRead.lastChapter}
+                    </Button>
+                  </Link>
+                )}
+              </div>
             )}
           </div>
         </div>

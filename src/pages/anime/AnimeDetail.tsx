@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Play, Calendar, Clock, Star, Film } from 'lucide-react';
+import { Play, Calendar, Clock, Star, Film, Heart } from 'lucide-react';
 import { animeApi, AnimeDetailData } from '@/lib/animeApi';
 import { Button } from '@/components/ui/button';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useReadingHistory } from '@/hooks/useReadingHistory';
 
 export default function AnimeDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -11,6 +13,8 @@ export default function AnimeDetail() {
   const [loading, setLoading] = useState(true);
   const [visibleEpisodes, setVisibleEpisodes] = useState(20);
   const observerTarget = useRef<HTMLDivElement>(null);
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const { getLastRead } = useReadingHistory();
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -97,6 +101,20 @@ export default function AnimeDetail() {
 
   // Sort episodes so newest first
   const sortedEpisodes = anime.episodeList?.slice().sort((a, b) => b.eps - a.eps) || [];
+  
+  const isCurrentFavorite = isFavorite('anime', slug!);
+  const lastRead = getLastRead('anime', slug!);
+
+  const handleFavoriteClick = () => {
+    toggleFavorite({
+      type: 'anime',
+      slug: slug!,
+      title: anime.title,
+      cover: anime.poster,
+      rating: anime.score,
+      status: anime.status,
+    });
+  };
 
   return (
     <div className="min-h-screen">
@@ -124,20 +142,42 @@ export default function AnimeDetail() {
           {/* Info */}
           <div className="md:col-span-2 space-y-6">
             <div>
-              <h1 className="text-3xl md:text-5xl font-bold mb-2">{anime.title}</h1>
-              {anime.japanese && (
-                <p className="text-lg text-muted-foreground">{anime.japanese}</p>
-              )}
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h1 className="text-3xl md:text-5xl font-bold mb-2">{anime.title}</h1>
+                  {anime.japanese && (
+                    <p className="text-lg text-muted-foreground">{anime.japanese}</p>
+                  )}
+                </div>
+                <Button
+                  variant={isCurrentFavorite ? "default" : "outline"}
+                  size="icon"
+                  onClick={handleFavoriteClick}
+                  className="flex-shrink-0"
+                >
+                  <Heart className={`h-5 w-5 ${isCurrentFavorite ? 'fill-current' : ''}`} />
+                </Button>
+              </div>
             </div>
 
             {/* Watch Button */}
             {sortedEpisodes.length > 0 && (
-              <Link to={`/anime/episode/${sortedEpisodes[sortedEpisodes.length - 1].episodeId}`}>
-                <Button size="lg" className="w-full md:w-auto">
-                  <Play className="mr-2 h-5 w-5" />
-                  Watch Episode 1
-                </Button>
-              </Link>
+              <div className="flex flex-wrap gap-2">
+                <Link to={`/anime/episode/${sortedEpisodes[sortedEpisodes.length - 1].episodeId}`}>
+                  <Button size="lg" className="w-full md:w-auto">
+                    <Play className="mr-2 h-5 w-5" />
+                    Watch Episode 1
+                  </Button>
+                </Link>
+                {lastRead?.lastEpisodeId && (
+                  <Link to={`/anime/episode/${lastRead.lastEpisodeId}`}>
+                    <Button size="lg" variant="secondary" className="w-full md:w-auto">
+                      <Play className="mr-2 h-5 w-5" />
+                      Continue: Ep {lastRead.lastEpisode}
+                    </Button>
+                  </Link>
+                )}
+              </div>
             )}
 
             {/* Meta Info */}
