@@ -5,11 +5,13 @@ import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Home, List } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useReadingHistory } from '@/hooks/useReadingHistory';
 
 const ComicChapter = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [showNav, setShowNav] = useState(true);
+  const { addToHistory } = useReadingHistory();
 
   const { data, isLoading } = useQuery({
     queryKey: ['comic-chapter', slug],
@@ -19,6 +21,20 @@ const ComicChapter = () => {
 
   // Extract comic slug from chapter slug (e.g., "kingdom-chapter-818" -> "kingdom")
   const comicSlug = slug?.replace(/-chapter-\d+.*$/, '') || '';
+
+  // Track reading history
+  useEffect(() => {
+    if (data?.title && comicSlug && slug) {
+      addToHistory({
+        type: 'comic',
+        slug: comicSlug,
+        title: data.title.replace(/Chapter.*$/i, '').trim() || comicSlug,
+        cover: data.images?.[0] || '',
+        lastChapter: data.title,
+        lastChapterSlug: slug,
+      });
+    }
+  }, [data, comicSlug, slug, addToHistory]);
 
   // Handle scroll to show/hide navigation
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, Menu, X, Library } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -45,6 +45,10 @@ export const Navbar = () => {
             </Link>
             <Link to="/news" className="text-sm font-medium hover:text-primary transition-colors">
               Berita
+            </Link>
+            <Link to="/library" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+              <Library className="h-4 w-4" />
+              Library
             </Link>
           </div>
 
@@ -122,6 +126,14 @@ export const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Berita
+              </Link>
+              <Link
+                to="/library"
+                className="text-sm font-medium hover:text-primary transition-colors py-2 flex items-center gap-1"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Library className="h-4 w-4" />
+                Library
               </Link>
             </div>
           </div>

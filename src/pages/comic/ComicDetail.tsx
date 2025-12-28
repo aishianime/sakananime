@@ -6,10 +6,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Star, BookOpen, User, Palette, Calendar, Clock } from 'lucide-react';
+import { Star, BookOpen, User, Palette, Calendar, Clock, Heart } from 'lucide-react';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useReadingHistory } from '@/hooks/useReadingHistory';
 
 const ComicDetail = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const { getLastRead } = useReadingHistory();
 
   const { data, isLoading } = useQuery({
     queryKey: ['comic-detail', slug],
@@ -21,6 +25,20 @@ const ComicDetail = () => {
 
   const detail = data?.detail;
   if (!detail) return <div className="container mx-auto px-4 py-8">Comic not found</div>;
+
+  const isCurrentFavorite = isFavorite('comic', slug!);
+  const lastRead = getLastRead('comic', slug!);
+
+  const handleFavoriteClick = () => {
+    toggleFavorite({
+      type: 'comic',
+      slug: slug!,
+      title: detail.title,
+      cover: detail.cover,
+      rating: detail.rating,
+      status: detail.status,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -49,7 +67,17 @@ const ComicDetail = () => {
 
           {/* Info Section */}
           <div className="flex-1 space-y-4">
-            <h1 className="text-2xl md:text-4xl font-bold">{detail.title}</h1>
+            <div className="flex items-start justify-between gap-4">
+              <h1 className="text-2xl md:text-4xl font-bold">{detail.title}</h1>
+              <Button
+                variant={isCurrentFavorite ? "default" : "outline"}
+                size="icon"
+                onClick={handleFavoriteClick}
+                className="flex-shrink-0"
+              >
+                <Heart className={`h-5 w-5 ${isCurrentFavorite ? 'fill-current' : ''}`} />
+              </Button>
+            </div>
             
             {detail.otherTitle && (
               <p className="text-sm text-muted-foreground">{detail.otherTitle}</p>
@@ -113,9 +141,18 @@ const ComicDetail = () => {
                 </Link>
               ))}
             </div>
+
+            {/* Continue Reading Button */}
+            {lastRead?.lastChapterSlug && (
+              <Link to={`/comic/bacakomik/chapter/${lastRead.lastChapterSlug}`}>
+                <Button variant="secondary" className="gap-2">
+                  <BookOpen className="h-4 w-4" />
+                  Continue: {lastRead.lastChapter}
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
-
         {/* Synopsis */}
         {detail.synopsis && (
           <Card className="mt-8">

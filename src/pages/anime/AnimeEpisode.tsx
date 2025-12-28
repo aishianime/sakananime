@@ -5,6 +5,7 @@ import { animeApi, AnimeEpisodeData, ServerQuality } from '@/lib/animeApi';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useReadingHistory } from '@/hooks/useReadingHistory';
 
 export default function AnimeEpisode() {
   const { slug } = useParams<{ slug: string }>();
@@ -14,6 +15,7 @@ export default function AnimeEpisode() {
   const [streamingUrl, setStreamingUrl] = useState('');
   const [selectedQuality, setSelectedQuality] = useState('');
   const [loadingServer, setLoadingServer] = useState(false);
+  const { addToHistory } = useReadingHistory();
 
   useEffect(() => {
     const fetchEpisode = async () => {
@@ -34,12 +36,30 @@ export default function AnimeEpisode() {
       } catch (error) {
         console.error('Error fetching episode:', error);
       } finally {
-        setLoading(false);
+      setLoading(false);
       }
     };
 
     fetchEpisode();
   }, [slug]);
+
+  // Track reading history when episode loads
+  useEffect(() => {
+    if (episode && slug) {
+      // Extract episode number from title
+      const episodeMatch = episode.title?.match(/Episode\s*(\d+)/i);
+      const episodeNum = episodeMatch ? episodeMatch[1] : '';
+      
+      addToHistory({
+        type: 'anime',
+        slug: episode.animeId || '',
+        title: episode.title?.replace(/Episode.*$/i, '').trim() || '',
+        cover: '',
+        lastEpisode: episodeNum,
+        lastEpisodeId: slug,
+      });
+    }
+  }, [episode, slug, addToHistory]);
 
   const handleServerChange = async (serverId: string) => {
     try {
