@@ -21,21 +21,29 @@ const NotFound = () => {
           <p className="text-muted-foreground max-w-md mx-auto">
             The page you're looking for doesn't exist or has been moved.
           </p>
+          <p className="text-sm text-muted-foreground">
+            URL: <span className="font-mono">{location.pathname}</span>
+          </p>
         </div>
-        
+
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/">
             <Button size="lg">
               <Home className="mr-2 h-4 w-4" />
               Back to Home
             </Button>
-           </Link>
-             <Link to="https://sociabuzz.com/rizaxshanachan/tribe">
+          </Link>
+          <Link to="/library">
             <Button size="lg" variant="outline">
-              <Search className="mr-2 h-4 w-4" />
-              donate
+              Library
             </Button>
           </Link>
+          <a href="https://sociabuzz.com/rizaxshanachan/tribe" target="_blank" rel="noreferrer">
+            <Button size="lg" variant="outline">
+              <Search className="mr-2 h-4 w-4" />
+              Donate
+            </Button>
+          </a>
         </div>
       </div>
     </div>

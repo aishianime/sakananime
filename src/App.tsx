@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import Home from "./pages/Home";
@@ -140,7 +140,13 @@ const App = () => {
 
                 {/* Library Route */}
                 <Route path="/library" element={<Library />} />
-                
+
+                {/* Aliases (avoid 404 for old/expected URLs) */}
+                <Route path="/history" element={<Navigate to="/library" replace />} />
+                <Route path="/favorites" element={<Navigate to="/library" replace />} />
+                <Route path="/favorit" element={<Navigate to="/library" replace />} />
+                <Route path="/bookmark" element={<Navigate to="/library" replace />} />
+
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
