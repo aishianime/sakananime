@@ -71,6 +71,12 @@ export const novelApi = {
     return response.json();
   },
 
+  // Alternative chapter endpoint using single slug
+  getChapterBySlug: async (slug: string) => {
+    const response = await fetch(`${BASE_URL}/novel/meionovel/chapter/${slug}`);
+    return response.json();
+  },
+
   search: async (query: string, page: number = 1) => {
     if (page === 1) {
       const response = await fetch(`${BASE_URL}/novel/meionovel/search/${encodeURIComponent(query)}`);
