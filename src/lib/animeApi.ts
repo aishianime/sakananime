@@ -214,4 +214,47 @@ export const animeApi = {
     const response = await fetch(`${BASE_URL}/anime/genres/${slug}?page=${page}`);
     return response.json();
   },
+
+  // New genre endpoints
+  getGenreList: async (): Promise<GenreResponse> => {
+    const response = await fetch(`${BASE_URL}/anime/genre`);
+    return response.json();
+  },
+
+  getGenreAnime: async (genre: string): Promise<AnimeListResponse> => {
+    const response = await fetch(`${BASE_URL}/anime/genre/${genre}`);
+    return response.json();
+  },
+
+  // Movie endpoints
+  getMovies: async (page: number = 1): Promise<AnimeListResponse> => {
+    const response = await fetch(`${BASE_URL}/anime/zoronime/movie?page=${page}`);
+    return response.json();
+  },
+
+  getAllAnime: async (): Promise<AnimeListResponse> => {
+    const response = await fetch(`${BASE_URL}/anime/zoronime/all-anime`);
+    return response.json();
+  },
+
+  // J-Drama endpoints
+  getJDrama: async (): Promise<AnimeListResponse> => {
+    const response = await fetch(`${BASE_URL}/anime/nimegami/j-drama`);
+    return response.json();
+  },
+
+  getLiveAction: async (): Promise<AnimeListResponse> => {
+    const response = await fetch(`${BASE_URL}/anime/nimegami/live-action`);
+    return response.json();
+  },
+
+  getLiveActionDetail: async (slug: string): Promise<AnimeDetailResponse> => {
+    const response = await fetch(`${BASE_URL}/anime/nimegami/live-action/${slug}`);
+    return response.json();
+  },
+
+  getDramaDetail: async (slug: string): Promise<AnimeDetailResponse> => {
+    const response = await fetch(`${BASE_URL}/anime/nimegami/drama/${slug}`);
+    return response.json();
+  },
 };

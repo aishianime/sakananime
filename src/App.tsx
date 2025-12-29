@@ -25,6 +25,14 @@ import AnimeSchedule from "./pages/anime/AnimeSchedule";
 import AnimeDetail from "./pages/anime/AnimeDetail";
 import AnimeEpisode from "./pages/anime/AnimeEpisode";
 import AnimeSearch from "./pages/anime/AnimeSearch";
+import AnimeGenreList from "./pages/anime/AnimeGenreList";
+import AnimeByGenre from "./pages/anime/AnimeByGenre";
+import AnimeMovies from "./pages/anime/AnimeMovies";
+import AnimeAll from "./pages/anime/AnimeAll";
+import JDrama from "./pages/anime/JDrama";
+import LiveAction from "./pages/anime/LiveAction";
+import DramaDetail from "./pages/anime/DramaDetail";
+import LiveActionDetail from "./pages/anime/LiveActionDetail";
 
 // Comic pages
 import ComicHome from "./pages/comic/ComicHome";
@@ -107,6 +115,14 @@ const App = () => {
                 <Route path="/anime/detail/:slug" element={<AnimeDetail />} />
                 <Route path="/anime/episode/:slug" element={<AnimeEpisode />} />
                 <Route path="/anime/search/:keyword" element={<AnimeSearch />} />
+                <Route path="/anime/genres" element={<AnimeGenreList />} />
+                <Route path="/anime/genre/:genre" element={<AnimeByGenre />} />
+                <Route path="/anime/movies" element={<AnimeMovies />} />
+                <Route path="/anime/all" element={<AnimeAll />} />
+                <Route path="/anime/j-drama" element={<JDrama />} />
+                <Route path="/anime/live-action" element={<LiveAction />} />
+                <Route path="/anime/drama/:slug" element={<DramaDetail />} />
+                <Route path="/anime/live-action/:slug" element={<LiveActionDetail />} />
 
                 {/* Comic Routes */}
                 <Route path="/comic" element={<ComicHome />} />
@@ -137,6 +153,7 @@ const App = () => {
                 <Route path="/novel/meionovel/detail/:slug" element={<NovelDetail />} />
                 <Route path="/novel/chapter/:novelSlug/:chapterSlug" element={<NovelChapter />} />
                 <Route path="/novel/read/:novelSlug/:chapterSlug" element={<NovelChapter />} />
+                <Route path="/novel/meionovel/chapter/:slug" element={<NovelChapter />} />
 
                 {/* Library Route */}
                 <Route path="/library" element={<Library />} />

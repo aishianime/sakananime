@@ -9,16 +9,26 @@ import { useState, useEffect } from 'react';
 import { useReadingHistory } from '@/hooks/useReadingHistory';
 
 const NovelChapter = () => {
-  const { novelSlug, chapterSlug } = useParams<{ novelSlug: string; chapterSlug: string }>();
+  const { novelSlug, chapterSlug, slug } = useParams<{ novelSlug?: string; chapterSlug?: string; slug?: string }>();
   const navigate = useNavigate();
   const [fontSize, setFontSize] = useState(18);
   const [showSettings, setShowSettings] = useState(false);
   const { addToHistory } = useReadingHistory();
 
+  // Handle both route formats
+  const isSlugOnlyRoute = !!slug && !novelSlug;
+  const effectiveNovelSlug = novelSlug || slug?.split('/')[0] || '';
+  const effectiveChapterSlug = chapterSlug || slug || '';
+
   const { data, isLoading } = useQuery({
-    queryKey: ['novel-chapter', novelSlug, chapterSlug],
-    queryFn: () => novelApi.getChapter(novelSlug!, chapterSlug!),
-    enabled: !!novelSlug && !!chapterSlug,
+    queryKey: ['novel-chapter', effectiveNovelSlug, effectiveChapterSlug],
+    queryFn: () => {
+      if (isSlugOnlyRoute) {
+        return novelApi.getChapterBySlug(slug!);
+      }
+      return novelApi.getChapter(effectiveNovelSlug, effectiveChapterSlug);
+    },
+    enabled: !!(effectiveNovelSlug || slug),
   });
 
   // Load saved font size
@@ -34,17 +44,17 @@ const NovelChapter = () => {
 
   // Track reading history
   useEffect(() => {
-    if (data?.title && novelSlug && chapterSlug) {
+    if (data?.title && (novelSlug || slug)) {
       addToHistory({
         type: 'novel',
-        slug: novelSlug,
-        title: data.title.replace(/Chapter.*$/i, '').trim() || novelSlug,
+        slug: effectiveNovelSlug || slug || '',
+        title: data.title.replace(/Chapter.*$/i, '').trim() || effectiveNovelSlug,
         cover: '',
         lastChapter: data.title,
-        lastChapterSlug: chapterSlug,
+        lastChapterSlug: effectiveChapterSlug || slug || '',
       });
     }
-  }, [data, novelSlug, chapterSlug, addToHistory]);
+  }, [data, novelSlug, chapterSlug, slug, effectiveNovelSlug, effectiveChapterSlug, addToHistory]);
 
   if (isLoading) return <LoadingSkeleton />;
 
@@ -66,7 +76,7 @@ const NovelChapter = () => {
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Link to={`/novel/detail/${novelSlug}`}>
+              <Link to={`/novel/detail/${effectiveNovelSlug || slug}`}>
                 <Button variant="ghost" size="sm">
                   <List className="h-4 w-4 mr-1" />
                   <span className="hidden sm:inline">Chapters</span>
@@ -92,14 +102,20 @@ const NovelChapter = () => {
                 <Settings className="h-4 w-4" />
               </Button>
               {data.navigation?.prev && (
-                <Link to={`/novel/chapter/${novelSlug}/${data.navigation.prev}`}>
+                <Link to={isSlugOnlyRoute 
+                  ? `/novel/meionovel/chapter/${data.navigation.prev}` 
+                  : `/novel/chapter/${effectiveNovelSlug}/${data.navigation.prev}`
+                }>
                   <Button variant="outline" size="sm">
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
                 </Link>
               )}
               {data.navigation?.next && (
-                <Link to={`/novel/chapter/${novelSlug}/${data.navigation.next}`}>
+                <Link to={isSlugOnlyRoute 
+                  ? `/novel/meionovel/chapter/${data.navigation.next}` 
+                  : `/novel/chapter/${effectiveNovelSlug}/${data.navigation.next}`
+                }>
                   <Button variant="outline" size="sm">
                     <ChevronRight className="h-4 w-4" />
                   </Button>
@@ -169,7 +185,10 @@ const NovelChapter = () => {
       <div className="sticky bottom-0 bg-card/95 backdrop-blur border-t p-4">
         <div className="container mx-auto flex items-center justify-between max-w-3xl">
           {data.navigation?.prev ? (
-            <Link to={`/novel/chapter/${novelSlug}/${data.navigation.prev}`}>
+            <Link to={isSlugOnlyRoute 
+              ? `/novel/meionovel/chapter/${data.navigation.prev}` 
+              : `/novel/chapter/${effectiveNovelSlug}/${data.navigation.prev}`
+            }>
               <Button variant="default">
                 <ChevronLeft className="h-4 w-4 mr-1" />
                 Previous
@@ -179,7 +198,7 @@ const NovelChapter = () => {
             <div />
           )}
 
-          <Link to={`/novel/detail/${novelSlug}`}>
+          <Link to={`/novel/detail/${effectiveNovelSlug || slug}`}>
             <Button variant="outline">
               <List className="h-4 w-4 mr-2" />
               All Chapters
@@ -187,7 +206,10 @@ const NovelChapter = () => {
           </Link>
 
           {data.navigation?.next ? (
-            <Link to={`/novel/chapter/${novelSlug}/${data.navigation.next}`}>
+            <Link to={isSlugOnlyRoute 
+              ? `/novel/meionovel/chapter/${data.navigation.next}` 
+              : `/novel/chapter/${effectiveNovelSlug}/${data.navigation.next}`
+            }>
               <Button variant="default">
                 Next
                 <ChevronRight className="h-4 w-4 ml-1" />
