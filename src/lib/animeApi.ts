@@ -205,23 +205,13 @@ export const animeApi = {
     return response.json();
   },
 
-  getGenres: async (): Promise<GenreResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/genres`);
-    return response.json();
-  },
-
-  getByGenre: async (slug: string, page: number = 1): Promise<AnimeListResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/genres/${slug}?page=${page}`);
-    return response.json();
-  },
-
   // New genre endpoints
-  getGenreList: async (): Promise<GenreResponse> => {
+  getGenres: async (): Promise<GenreResponse> => {
     const response = await fetch(`${BASE_URL}/anime/genre`);
     return response.json();
   },
 
-  getGenreAnime: async (genre: string): Promise<AnimeListResponse> => {
+  getByGenre: async (genre: string): Promise<AnimeListResponse> => {
     const response = await fetch(`${BASE_URL}/anime/genre/${genre}`);
     return response.json();
   },
