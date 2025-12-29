@@ -1,20 +1,31 @@
+import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { animeApi } from '@/lib/animeApi';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clapperboard, Star, Play } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Clapperboard, Star, Play, Search } from 'lucide-react';
 
 const JDrama = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+
   const { data, isLoading } = useQuery({
     queryKey: ['j-drama'],
     queryFn: () => animeApi.getJDrama(),
   });
 
-  if (isLoading) return <LoadingSkeleton />;
-
   const dramaList = data?.data?.animeList || [];
+
+  const filteredList = useMemo(() => {
+    if (!searchQuery.trim()) return dramaList;
+    return dramaList.filter((drama: any) =>
+      drama.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [dramaList, searchQuery]);
+
+  if (isLoading) return <LoadingSkeleton />;
 
   return (
     <div className="min-h-screen">
@@ -24,17 +35,28 @@ const JDrama = () => {
           <h1 className="text-3xl md:text-4xl font-bold">Japanese Drama</h1>
         </div>
 
-        <div className="flex gap-4 mb-6">
-          <Link to="/anime/live-action" className="text-primary hover:underline">
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search drama..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <Link to="/anime/live-action" className="text-primary hover:underline self-center">
             Live Action →
           </Link>
         </div>
 
-        {dramaList.length === 0 ? (
-          <p className="text-muted-foreground text-center py-12">No drama found</p>
+        {filteredList.length === 0 ? (
+          <p className="text-muted-foreground text-center py-12">
+            {searchQuery ? 'No drama found matching your search' : 'No drama found'}
+          </p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {dramaList.map((drama, index) => (
+            {filteredList.map((drama: any, index: number) => (
               <Link key={index} to={`/anime/drama/${drama.animeId}`} className="group block">
                 <Card className="overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="relative aspect-[2/3] overflow-hidden">

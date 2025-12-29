@@ -1,20 +1,31 @@
+import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { animeApi } from '@/lib/animeApi';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Film, Star, Play } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Film, Star, Play, Search } from 'lucide-react';
 
 const LiveAction = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+
   const { data, isLoading } = useQuery({
     queryKey: ['live-action'],
     queryFn: () => animeApi.getLiveAction(),
   });
 
-  if (isLoading) return <LoadingSkeleton />;
-
   const actionList = data?.data?.animeList || [];
+
+  const filteredList = useMemo(() => {
+    if (!searchQuery.trim()) return actionList;
+    return actionList.filter((item: any) =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [actionList, searchQuery]);
+
+  if (isLoading) return <LoadingSkeleton />;
 
   return (
     <div className="min-h-screen">
@@ -24,17 +35,28 @@ const LiveAction = () => {
           <h1 className="text-3xl md:text-4xl font-bold">Live Action</h1>
         </div>
 
-        <div className="flex gap-4 mb-6">
-          <Link to="/anime/j-drama" className="text-primary hover:underline">
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search live action..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <Link to="/anime/j-drama" className="text-primary hover:underline self-center">
             ← Japanese Drama
           </Link>
         </div>
 
-        {actionList.length === 0 ? (
-          <p className="text-muted-foreground text-center py-12">No live action found</p>
+        {filteredList.length === 0 ? (
+          <p className="text-muted-foreground text-center py-12">
+            {searchQuery ? 'No live action found matching your search' : 'No live action found'}
+          </p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {actionList.map((item, index) => (
+            {filteredList.map((item: any, index: number) => (
               <Link key={index} to={`/anime/live-action/${item.animeId}`} className="group block">
                 <Card className="overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="relative aspect-[2/3] overflow-hidden">
