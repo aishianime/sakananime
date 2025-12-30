@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { animeApi } from '@/lib/animeApi';
 import { comicApi } from '@/lib/comicApi';
@@ -11,20 +11,59 @@ import { ComicCard } from '@/components/ComicCard';
 import { NovelCard } from '@/components/NovelCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { Search, Film, Tv, BookOpen, BookText, CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Search, Film, Tv, BookOpen, BookText, CheckCircle, Loader2 } from 'lucide-react';
 
 const UnifiedCompleted = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [animePage, setAnimePage] = useState(1);
+  const [donghuaPage, setDonghuaPage] = useState(1);
+  const [animeList, setAnimeList] = useState<any[]>([]);
+  const [donghuaList, setDonghuaList] = useState<any[]>([]);
+  const [animeHasMore, setAnimeHasMore] = useState(true);
+  const [donghuaHasMore, setDonghuaHasMore] = useState(true);
 
-  const { data: donghuaData, isLoading: donghuaLoading } = useQuery({
-    queryKey: ['donghua-completed'],
-    queryFn: () => api.getCompleted(1),
+  const { data: donghuaData, isLoading: donghuaLoading, isFetching: donghuaFetching } = useQuery({
+    queryKey: ['donghua-completed', donghuaPage],
+    queryFn: () => api.getCompleted(donghuaPage),
   });
 
-  const { data: animeData, isLoading: animeLoading } = useQuery({
-    queryKey: ['anime-completed'],
-    queryFn: () => animeApi.getCompleted(1),
+  const { data: animeData, isLoading: animeLoading, isFetching: animeFetching } = useQuery({
+    queryKey: ['anime-completed', animePage],
+    queryFn: () => animeApi.getCompleted(animePage),
   });
+
+  useEffect(() => {
+    if (donghuaData) {
+      const newList = donghuaData?.donghuaList || [];
+      if (donghuaPage === 1) {
+        setDonghuaList(newList);
+      } else {
+        setDonghuaList(prev => {
+          const existingSlugs = new Set(prev.map(d => d.slug));
+          const uniqueNew = newList.filter((d: any) => !existingSlugs.has(d.slug));
+          return [...prev, ...uniqueNew];
+        });
+      }
+      setDonghuaHasMore(newList.length >= 20);
+    }
+  }, [donghuaData, donghuaPage]);
+
+  useEffect(() => {
+    if (animeData) {
+      const newList = animeData?.data?.animeList || [];
+      if (animePage === 1) {
+        setAnimeList(newList);
+      } else {
+        setAnimeList(prev => {
+          const existingIds = new Set(prev.map(a => a.animeId));
+          const uniqueNew = newList.filter((a: any) => !existingIds.has(a.animeId));
+          return [...prev, ...uniqueNew];
+        });
+      }
+      setAnimeHasMore(newList.length >= 20);
+    }
+  }, [animeData, animePage]);
 
   const { data: comicData, isLoading: comicLoading } = useQuery({
     queryKey: ['comic-top'],
@@ -42,6 +81,14 @@ const UnifiedCompleted = () => {
       item[titleKey]?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   };
+
+  const loadMoreAnime = useCallback(() => {
+    setAnimePage(prev => prev + 1);
+  }, []);
+
+  const loadMoreDonghua = useCallback(() => {
+    setDonghuaPage(prev => prev + 1);
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -82,26 +129,68 @@ const UnifiedCompleted = () => {
         </TabsList>
 
         <TabsContent value="anime">
-          {animeLoading ? (
+          {animeLoading && animePage === 1 ? (
             <LoadingSkeleton />
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {filterByTitle(animeData?.data?.animeList || [], 'title').map((anime: any) => (
-                <AnimeCard key={anime.animeId} {...anime} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {filterByTitle(animeList, 'title').map((anime: any) => (
+                  <AnimeCard key={anime.animeId} {...anime} />
+                ))}
+              </div>
+              {animeHasMore && !searchQuery && (
+                <div className="flex justify-center mt-8">
+                  <Button 
+                    onClick={loadMoreAnime} 
+                    disabled={animeFetching}
+                    variant="outline"
+                    size="lg"
+                  >
+                    {animeFetching ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      'Load More'
+                    )}
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </TabsContent>
 
         <TabsContent value="donghua">
-          {donghuaLoading ? (
+          {donghuaLoading && donghuaPage === 1 ? (
             <LoadingSkeleton />
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {filterByTitle(donghuaData?.donghuaList || [], 'title').map((donghua: any) => (
-                <DonghuaCard key={donghua.slug} {...donghua} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {filterByTitle(donghuaList, 'title').map((donghua: any) => (
+                  <DonghuaCard key={donghua.slug} {...donghua} />
+                ))}
+              </div>
+              {donghuaHasMore && !searchQuery && (
+                <div className="flex justify-center mt-8">
+                  <Button 
+                    onClick={loadMoreDonghua} 
+                    disabled={donghuaFetching}
+                    variant="outline"
+                    size="lg"
+                  >
+                    {donghuaFetching ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      'Load More'
+                    )}
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </TabsContent>
 
