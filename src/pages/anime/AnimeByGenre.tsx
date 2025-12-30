@@ -11,7 +11,7 @@ const AnimeByGenre = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ['anime-by-genre', genre],
-    queryFn: () => animeApi.getGenreAnime(genre!),
+    queryFn: () => animeApi.getByGenre(genre!),
     enabled: !!genre,
   });
 

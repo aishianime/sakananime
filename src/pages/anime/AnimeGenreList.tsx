@@ -7,7 +7,7 @@ import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 const AnimeGenreList = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['anime-genre-list'],
-    queryFn: () => animeApi.getGenreList(),
+    queryFn: () => animeApi.getGenres(),
   });
 
   if (isLoading) return <LoadingSkeleton />;
