@@ -61,6 +61,11 @@ import NovelLatest from "./pages/novel/NovelLatest";
 import ComicDetail from "./pages/comic/ComicDetail";
 import ComicChapter from "./pages/comic/ComicChapter";
 
+// Unified pages
+import UnifiedGenres from "./pages/unified/UnifiedGenres";
+import UnifiedOngoing from "./pages/unified/UnifiedOngoing";
+import UnifiedCompleted from "./pages/unified/UnifiedCompleted";
+
 // Library page
 import Library from "./pages/Library";
 
@@ -157,6 +162,11 @@ const App = () => {
 
                 {/* Library Route */}
                 <Route path="/library" element={<Library />} />
+
+                {/* Unified Routes */}
+                <Route path="/browse/genres" element={<UnifiedGenres />} />
+                <Route path="/browse/ongoing" element={<UnifiedOngoing />} />
+                <Route path="/browse/completed" element={<UnifiedCompleted />} />
 
                 {/* Aliases (avoid 404 for old/expected URLs) */}
                 <Route path="/history" element={<Navigate to="/library" replace />} />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, X, Library } from 'lucide-react';
+import { Search, Menu, X, Library, Tags, Clock, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -43,12 +43,17 @@ export const Navbar = () => {
             <Link to="/novel" className="text-sm font-medium hover:text-primary transition-colors">
               Novel
             </Link>
-            <Link to="/news" className="text-sm font-medium hover:text-primary transition-colors">
-              Berita
+            <Link to="/browse/genres" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+              <Tags className="h-4 w-4" /> Genres
+            </Link>
+            <Link to="/browse/ongoing" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+              <Clock className="h-4 w-4" /> Ongoing
+            </Link>
+            <Link to="/browse/completed" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+              <CheckCircle className="h-4 w-4" /> Completed
             </Link>
             <Link to="/library" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
-              <Library className="h-4 w-4" />
-              Library
+              <Library className="h-4 w-4" /> Library
             </Link>
           </div>
 
@@ -121,19 +126,32 @@ export const Navbar = () => {
                 Novel
               </Link>
               <Link
-                to="/news"
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
+                to="/browse/genres"
+                className="text-sm font-medium hover:text-primary transition-colors py-2 flex items-center gap-1"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Berita
+                <Tags className="h-4 w-4" /> Genres
+              </Link>
+              <Link
+                to="/browse/ongoing"
+                className="text-sm font-medium hover:text-primary transition-colors py-2 flex items-center gap-1"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Clock className="h-4 w-4" /> Ongoing
+              </Link>
+              <Link
+                to="/browse/completed"
+                className="text-sm font-medium hover:text-primary transition-colors py-2 flex items-center gap-1"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <CheckCircle className="h-4 w-4" /> Completed
               </Link>
               <Link
                 to="/library"
                 className="text-sm font-medium hover:text-primary transition-colors py-2 flex items-center gap-1"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <Library className="h-4 w-4" />
-                Library
+                <Library className="h-4 w-4" /> Library
               </Link>
             </div>
           </div>
