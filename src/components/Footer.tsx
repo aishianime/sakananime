@@ -63,6 +63,11 @@ export const Footer = () => {
                   Donate
                 </Link>
               </li>
+              <li>
+                <Link to="https://x.com/aishia_network" className="text-muted-foreground hover:text-primary transition-colors">
+                  Twitter
+                </Link>
+              </li>
             </ul>
           </div>
 
