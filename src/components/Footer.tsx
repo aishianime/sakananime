@@ -20,7 +20,6 @@ export const Footer = () => {
     { href: 'https://sociabuzz.com/rizaxshanachan/tribe', label: 'Donate', icon: Gift },
     { href: 'https://x.com/aishia_network', label: 'Twitter', icon: Twitter },
     { href: 'https://www.facebook.com/share/p/18A9gQ1anu/', label: 'Facebook', icon: Facebook },
-    { href: 'https://whatsapp.com/channel/0029VbBFKhq35fLwz3RhzE0x', label: 'Whatsapp', Icon: WhatsApp },
   ];
 
   return (
