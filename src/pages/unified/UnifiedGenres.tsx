@@ -34,8 +34,8 @@ const UnifiedGenres = () => {
     queryFn: novelApi.getGenres,
   });
 
-  const filterGenres = (genres: any[], nameKey: string = 'name') => {
-    if (!genres) return [];
+  const filterGenres = (genres: any, nameKey: string = 'name') => {
+    if (!genres || !Array.isArray(genres)) return [];
     return genres.filter((g: any) => 
       g[nameKey]?.toLowerCase().includes(searchQuery.toLowerCase())
     );
