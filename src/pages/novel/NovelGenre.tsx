@@ -7,17 +7,17 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const NovelGenre = () => {
-  const { genreId } = useParams<{ genreId: string }>();
+  const { slug } = useParams<{ slug: string }>();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['novel-genre', genreId],
-    queryFn: () => novelApi.getByGenre(genreId!),
+    queryKey: ['novel-genre', slug],
+    queryFn: () => novelApi.getByGenre(slug!),
     enabled: !!genreId,
   });
 
   if (isLoading) return <LoadingSkeleton />;
 
-  const currentGenre = data?.result?.genres?.find((g: any) => g.genreId === genreId);
+  const currentGenre = data?.result?.genres?.find((g: any) => g.slug === slug);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -28,9 +28,9 @@ const NovelGenre = () => {
       {/* Genre Links */}
       <div className="flex flex-wrap gap-2 mb-8">
         {data?.result?.genres?.slice(0, 10).map((genre: any) => (
-          <Link key={genre.genreId} to={`/novel/genre/${genre.genreId}`}>
+          <Link key={genre.slug} to={`/novel/genre/${genre.slug}`}>
             <Button
-              variant={genre.genreId === genreId ? "default" : "outline"}
+              variant={genre.slug === slug ? "default" : "outline"}
               size="sm"
             >
               {genre.name}
