@@ -12,7 +12,7 @@ const NovelGenre = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['novel-genre', slug],
     queryFn: () => novelApi.getByGenre(slug!),
-    enabled: !!genreId,
+    enabled: !!slug,
   });
 
   if (isLoading) return <LoadingSkeleton />;
