@@ -1,88 +1,113 @@
 import { Link } from 'react-router-dom';
+import { Heart, Twitter, Gift, Tv, Film, BookOpen, BookText } from 'lucide-react';
 
 export const Footer = () => {
+  const contentLinks = [
+    { to: '/', label: 'Donghua', icon: Film },
+    { to: '/anime', label: 'Anime', icon: Tv },
+    { to: '/comic', label: 'Comic', icon: BookOpen },
+    { to: '/novel', label: 'Novel', icon: BookText },
+  ];
+
+  const browseLinks = [
+    { to: '/browse/genres', label: 'All Genres' },
+    { to: '/browse/ongoing', label: 'Ongoing' },
+    { to: '/browse/completed', label: 'Completed' },
+    { to: '/library', label: 'My Library' },
+  ];
+
+  const socialLinks = [
+    { href: 'https://sociabuzz.com/rizaxshanachan/tribe', label: 'Donate', icon: Gift },
+    { href: 'https://x.com/aishia_network', label: 'Twitter', icon: Twitter },
+  ];
+
   return (
-    <footer className="border-t bg-card mt-auto">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="border-t bg-card/50 mt-auto">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand */}
-          <div className="space-y-3">
-            <h3 className="text-lg font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Sakanan!me
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Your premier destination for watching Chinese animation (Donghua) with subtitle Indonesia.
+          <div className="col-span-2 md:col-span-4 lg:col-span-1 space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-lg">
+                <span className="text-xl font-bold text-white">S</span>
+              </div>
+              <span className="text-xl font-bold text-gradient">sakanan!me</span>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Your premier destination for watching Donghua, Anime, Comics and Light Novels with Indonesian subtitles.
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/ongoing" className="text-muted-foreground hover:text-primary transition-colors">
-                  Ongoing
-                </Link>
-              </li>
-              <li>
-                <Link to="/completed" className="text-muted-foreground hover:text-primary transition-colors">
-                  Completed
-                </Link>
-              </li>
+          {/* Content */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Content</h4>
+            <ul className="space-y-3">
+              {contentLinks.map((link) => (
+                <li key={link.to}>
+                  <Link 
+                    to={link.to} 
+                    className="text-sm text-foreground/80 hover:text-primary transition-colors flex items-center gap-2 group"
+                  >
+                    <link.icon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Browse */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold">Browse</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/genres" className="text-muted-foreground hover:text-primary transition-colors">
-                  All Genres
-                </Link>
-              </li>
-              <li>
-                <Link to="/by-year" className="text-muted-foreground hover:text-primary transition-colors">
-                  By Year
-                </Link>
-              </li>
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Browse</h4>
+            <ul className="space-y-3">
+              {browseLinks.map((link) => (
+                <li key={link.to}>
+                  <Link 
+                    to={link.to} 
+                    className="text-sm text-foreground/80 hover:text-primary transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Browse */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold">Sosial media</h4>
-            <ul className="space-y-2 text-sm">
-               <li>
-                <Link to="https://sociabuzz.com/rizaxshanachan/tribe" className="text-muted-foreground hover:text-primary transition-colors">
-                  Donate
-                </Link>
-              </li>
-              <li>
-                <Link to="https://x.com/aishia_network" className="text-muted-foreground hover:text-primary transition-colors">
-                  Twitter
-                </Link>
-              </li>
+          {/* Social */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Connect</h4>
+            <ul className="space-y-3">
+              {socialLinks.map((link) => (
+                <li key={link.href}>
+                  <a 
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-foreground/80 hover:text-primary transition-colors flex items-center gap-2 group"
+                  >
+                    <link.icon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* About */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold">About</h4>
-            <p className="text-sm text-muted-foreground">
-              Sakanan!me provides free streaming of Chinese animation with Indonesian subtitles. All content belongs to their respective owners.
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">About</h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Sakanan!me provides free streaming with Indonesian subtitles. All content belongs to their respective owners.
             </p>
           </div>
         </div>
 
-        <div className="border-t mt-8 pt-6 text-center">
+        <div className="border-t mt-10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Sakanan!me All rights reserved.
+            © {new Date().getFullYear()} Sakanan!me. All rights reserved.
+          </p>
+          <p className="text-sm text-muted-foreground flex items-center gap-1">
+            Made with <Heart className="h-4 w-4 text-destructive fill-destructive" /> for anime fans
           </p>
         </div>
       </div>

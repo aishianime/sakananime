@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, X, Library, Tags, Clock, CheckCircle } from 'lucide-react';
+import { Search, Menu, X, Library, Tags, Clock, CheckCircle, User, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -18,64 +18,83 @@ export const Navbar = () => {
     }
   };
 
+  const navLinks = [
+    { to: '/', label: 'Donghua' },
+    { to: '/anime', label: 'Anime' },
+    { to: '/comic', label: 'Comic' },
+    { to: '/novel', label: 'Novel' },
+  ];
+
+  const browseLinks = [
+    { to: '/browse/genres', label: 'Genres', icon: Tags },
+    { to: '/browse/ongoing', label: 'Ongoing', icon: Clock },
+    { to: '/browse/completed', label: 'Completed', icon: CheckCircle },
+    { to: '/library', label: 'Library', icon: Library },
+  ];
+
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full border-b glass">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-16 items-center justify-between gap-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              sakanan!me
+          <Link to="/" className="flex items-center gap-2 shrink-0">
+            <div className="h-9 w-9 rounded-xl bg-gradient-primary flex items-center justify-center shadow-lg">
+              <span className="text-lg font-bold text-white">S</span>
             </div>
+            <span className="text-xl font-bold text-gradient hidden sm:block">
+              sakanan!me
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
-              Donghua
-            </Link>
-            <Link to="/anime" className="text-sm font-medium hover:text-primary transition-colors">
-              Anime
-            </Link>
-            <Link to="/comic" className="text-sm font-medium hover:text-primary transition-colors">
-              Comic
-            </Link>
-            <Link to="/novel" className="text-sm font-medium hover:text-primary transition-colors">
-              Novel
-            </Link>
-            <Link to="/browse/genres" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
-              <Tags className="h-4 w-4" /> Genres
-            </Link>
-            <Link to="/browse/ongoing" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
-              <Clock className="h-4 w-4" /> Ongoing
-            </Link>
-            <Link to="/browse/completed" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
-              <CheckCircle className="h-4 w-4" /> Completed
-            </Link>
-            <Link to="/library" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
-              <Library className="h-4 w-4" /> Library
-            </Link>
+          <div className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="w-px h-6 bg-border mx-2" />
+            {browseLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors flex items-center gap-1.5"
+              >
+                <link.icon className="h-4 w-4" />
+                <span className="hidden xl:inline">{link.label}</span>
+              </Link>
+            ))}
           </div>
 
-          {/* Search Bar - Desktop */}
-          <form onSubmit={handleSearch} className="hidden md:flex items-center space-x-2">
-            <Input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-48"
-            />
-            <Button type="submit" size="icon" variant="default">
-              <Search className="h-4 w-4" />
-            </Button>
-          </form>
+          {/* Search Bar & Actions - Desktop */}
+          <div className="hidden md:flex items-center gap-3">
+            <form onSubmit={handleSearch} className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-48 lg:w-56 pl-9 bg-secondary/50 border-transparent focus:border-primary/50 focus:bg-background transition-all"
+              />
+            </form>
+            <Link to="/auth">
+              <Button variant="default" size="sm" className="gap-2 bg-gradient-primary hover:opacity-90 transition-opacity border-0 shadow-lg">
+                <LogIn className="h-4 w-4" />
+                <span className="hidden lg:inline">Sign In</span>
+              </Button>
+            </Link>
+          </div>
 
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="lg:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -84,76 +103,58 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-4 animate-fade-in">
-            <form onSubmit={handleSearch} className="flex items-center space-x-2">
-              <Input
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+          <div className="lg:hidden py-4 space-y-4 animate-slide-up border-t">
+            <form onSubmit={handleSearch} className="flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9"
+                />
+              </div>
               <Button type="submit" size="icon">
                 <Search className="h-4 w-4" />
               </Button>
             </form>
-            <div className="flex flex-col space-y-2">
-              <Link
-                to="/"
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Donghua
-              </Link>
-              <Link
-                to="/anime"
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Anime
-              </Link>
-              <Link
-                to="/comic"
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Comic
-              </Link>
-              <Link
-                to="/novel"
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Novel
-              </Link>
-              <Link
-                to="/browse/genres"
-                className="text-sm font-medium hover:text-primary transition-colors py-2 flex items-center gap-1"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Tags className="h-4 w-4" /> Genres
-              </Link>
-              <Link
-                to="/browse/ongoing"
-                className="text-sm font-medium hover:text-primary transition-colors py-2 flex items-center gap-1"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Clock className="h-4 w-4" /> Ongoing
-              </Link>
-              <Link
-                to="/browse/completed"
-                className="text-sm font-medium hover:text-primary transition-colors py-2 flex items-center gap-1"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <CheckCircle className="h-4 w-4" /> Completed
-              </Link>
-              <Link
-                to="/library"
-                className="text-sm font-medium hover:text-primary transition-colors py-2 flex items-center gap-1"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Library className="h-4 w-4" /> Library
-              </Link>
+
+            <div className="grid grid-cols-2 gap-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="px-4 py-3 text-sm font-medium text-center bg-secondary/50 hover:bg-secondary rounded-lg transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              {browseLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="px-4 py-3 text-sm font-medium bg-accent/50 hover:bg-accent rounded-lg transition-colors flex items-center justify-center gap-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <link.icon className="h-4 w-4" />
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <Link
+              to="/auth"
+              className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium bg-gradient-primary text-white rounded-lg"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <LogIn className="h-4 w-4" />
+              Sign In / Register
+            </Link>
           </div>
         )}
       </div>

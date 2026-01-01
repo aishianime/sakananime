@@ -199,7 +199,7 @@ const UnifiedOngoing = () => {
             <LoadingSkeleton />
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {filterByTitle(comicData?.komikList || [], 'title').map((comic: any) => (
+              {filterByTitle(comicData?.komikList || comicData?.data?.komikList || [], 'title').map((comic: any) => (
                 <ComicCard key={comic.slug} {...comic} />
               ))}
             </div>
@@ -211,7 +211,7 @@ const UnifiedOngoing = () => {
             <LoadingSkeleton />
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {filterByTitle(novelData?.novels || [], 'title').map((novel: any) => (
+              {filterByTitle(novelData?.data?.latestUpdates || novelData?.novels || [], 'title').map((novel: any) => (
                 <NovelCard key={novel.slug} {...novel} />
               ))}
             </div>

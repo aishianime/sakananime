@@ -9,16 +9,16 @@ import { useState, useEffect } from 'react';
 import { useReadingHistory } from '@/hooks/useReadingHistory';
 
 const NovelChapter = () => {
-  const { novelSlug, chapterSlug, slug } = useParams<{ novelSlug?: string; chapterSlug?: string; slug?: string }>();
+  const { novelSlug, chapterSlug, slug, extra } = useParams<{ novelSlug?: string; chapterSlug?: string; slug?: string; extra?: string }>();
   const navigate = useNavigate();
   const [fontSize, setFontSize] = useState(18);
   const [showSettings, setShowSettings] = useState(false);
   const { addToHistory } = useReadingHistory();
 
-  // Handle both route formats
+  // Handle multiple route formats including /novel/read/:novelSlug/:extra/:chapterSlug
   const isSlugOnlyRoute = !!slug && !novelSlug;
   const effectiveNovelSlug = novelSlug || slug?.split('/')[0] || '';
-  const effectiveChapterSlug = chapterSlug || slug || '';
+  const effectiveChapterSlug = extra ? chapterSlug : (chapterSlug || slug || '');
 
   const { data, isLoading } = useQuery({
     queryKey: ['novel-chapter', effectiveNovelSlug, effectiveChapterSlug],
