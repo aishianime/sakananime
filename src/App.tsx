@@ -69,6 +69,9 @@ import UnifiedCompleted from "./pages/unified/UnifiedCompleted";
 // Library page
 import Library from "./pages/Library";
 
+// Auth page
+import Auth from "./pages/Auth";
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -168,6 +171,9 @@ const App = () => {
                 <Route path="/browse/genres" element={<UnifiedGenres />} />
                 <Route path="/browse/ongoing" element={<UnifiedOngoing />} />
                 <Route path="/browse/completed" element={<UnifiedCompleted />} />
+
+                {/* Auth Route */}
+                <Route path="/auth" element={<Auth />} />
 
                 {/* Aliases (avoid 404 for old/expected URLs) */}
                 <Route path="/history" element={<Navigate to="/library" replace />} />
