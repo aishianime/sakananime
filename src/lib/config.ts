@@ -1,6 +1,6 @@
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: 'https://www.sankavollerei.com',
+  BASE_URL: 'https://sakananime.my.id',
   SITE_URL: window.location.origin,
 } as const;
 
