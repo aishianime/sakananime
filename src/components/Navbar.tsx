@@ -1,13 +1,22 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, X, Library, Tags, Clock, CheckCircle, User, LogIn } from 'lucide-react';
+import { Search, Menu, X, Library, Tags, Clock, CheckCircle, User, LogIn, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hooks/useAuth';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,12 +91,34 @@ export const Navbar = () => {
                 className="w-48 lg:w-56 pl-9 bg-secondary/50 border-transparent focus:border-primary/50 focus:bg-background transition-all"
               />
             </form>
-            <Link to="/auth">
-              <Button variant="default" size="sm" className="gap-2 bg-gradient-primary hover:opacity-90 transition-opacity border-0 shadow-lg">
-                <LogIn className="h-4 w-4" />
-                <span className="hidden lg:inline">Sign In</span>
-              </Button>
-            </Link>
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="default" size="sm" className="gap-2 bg-gradient-primary hover:opacity-90 transition-opacity border-0 shadow-lg">
+                    <User className="h-4 w-4" />
+                    <span className="hidden lg:inline">{user?.name?.split(' ')[0] || 'User'}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    <span className="truncate">{user?.email}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout} className="flex items-center gap-2 text-destructive">
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/auth">
+                <Button variant="default" size="sm" className="gap-2 bg-gradient-primary hover:opacity-90 transition-opacity border-0 shadow-lg">
+                  <LogIn className="h-4 w-4" />
+                  <span className="hidden lg:inline">Sign In</span>
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -147,14 +178,27 @@ export const Navbar = () => {
               ))}
             </div>
 
-            <Link
-              to="/auth"
-              className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium bg-gradient-primary text-white rounded-lg"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <LogIn className="h-4 w-4" />
-              Sign In / Register
-            </Link>
+            {isAuthenticated ? (
+              <button
+                onClick={() => {
+                  logout();
+                  setMobileMenuOpen(false);
+                }}
+                className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium bg-destructive text-destructive-foreground rounded-lg"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign Out ({user?.name?.split(' ')[0]})
+              </button>
+            ) : (
+              <Link
+                to="/auth"
+                className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium bg-gradient-primary text-white rounded-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <LogIn className="h-4 w-4" />
+                Sign In / Register
+              </Link>
+            )}
           </div>
         )}
       </div>
