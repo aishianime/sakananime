@@ -129,7 +129,7 @@ const UnifiedGenres = () => {
             <LoadingSkeleton />
           ) : (
             <div className="flex flex-wrap gap-2">
-              {filterGenres(novelGenres?.genres || [], 'name').map((genre: any) => (
+              {filterGenres(novelGenres?.data?.genres || novelGenres?.genres || [], 'name').map((genre: any) => (
                 <Link key={genre.slug} to={`/novel/genre/${genre.slug}`}>
                   <Badge variant="outline" className="text-sm py-2 px-4 hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer">
                     {genre.name} {genre.count && `(${genre.count})`}

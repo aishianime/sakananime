@@ -158,6 +158,7 @@ const App = () => {
                 <Route path="/novel/meionovel/detail/:slug" element={<NovelDetail />} />
                 <Route path="/novel/chapter/:novelSlug/:chapterSlug" element={<NovelChapter />} />
                 <Route path="/novel/read/:novelSlug/:chapterSlug" element={<NovelChapter />} />
+                <Route path="/novel/read/:novelSlug/:extra/:chapterSlug" element={<NovelChapter />} />
                 <Route path="/novel/meionovel/chapter/:slug" element={<NovelChapter />} />
 
                 {/* Library Route */}
