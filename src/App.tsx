@@ -66,6 +66,15 @@ import UnifiedGenres from "./pages/unified/UnifiedGenres";
 import UnifiedOngoing from "./pages/unified/UnifiedOngoing";
 import UnifiedCompleted from "./pages/unified/UnifiedCompleted";
 
+// TV Show pages
+import TvShowHome from "./pages/tvshow/TvShowHome";
+import TvShowDetail from "./pages/tvshow/TvShowDetail";
+import TvShowEpisode from "./pages/tvshow/TvShowEpisode";
+import TvShowSearch from "./pages/tvshow/TvShowSearch";
+import TvShowGenres from "./pages/tvshow/TvShowGenres";
+import TvShowByGenre from "./pages/tvshow/TvShowByGenre";
+import TvShowAll from "./pages/tvshow/TvShowAll";
+
 // Library page
 import Library from "./pages/Library";
 
@@ -174,8 +183,18 @@ const App = () => {
                 <Route path="/browse/completed" element={<UnifiedCompleted />} />
 
                 {/* Auth Route */}
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/account" element={<Account />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/account" element={<Account />} />
+
+                {/* TV Show Routes */}
+                <Route path="/tvshow" element={<TvShowHome />} />
+                <Route path="/tvshow/film/:id" element={<TvShowDetail type="film" />} />
+                <Route path="/tvshow/series/:id" element={<TvShowDetail type="series" />} />
+                <Route path="/tvshow/episode/:id" element={<TvShowEpisode />} />
+                <Route path="/tvshow/search" element={<TvShowSearch />} />
+                <Route path="/tvshow/genres" element={<TvShowGenres />} />
+                <Route path="/tvshow/genre/:slug" element={<TvShowByGenre />} />
+                <Route path="/tvshow/all" element={<TvShowAll />} />
 
                 {/* Aliases (avoid 404 for old/expected URLs) */}
                 <Route path="/history" element={<Navigate to="/library" replace />} />
