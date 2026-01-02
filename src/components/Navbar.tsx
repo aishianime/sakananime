@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, X, Library, Tags, Clock, CheckCircle, User, LogIn, LogOut } from 'lucide-react';
+import { Search, Menu, X, Library, Tags, Clock, CheckCircle, User, LogIn, LogOut, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
@@ -100,12 +100,18 @@ export const Navbar = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
+                  <Link to="/account">
+                    <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+                      <Trophy className="h-4 w-4 text-amber-400" />
+                      <span>My Account</span>
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem className="flex items-center gap-2">
                     <User className="h-4 w-4" />
                     <span className="truncate">{user?.email}</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout} className="flex items-center gap-2 text-destructive">
+                  <DropdownMenuItem onClick={logout} className="flex items-center gap-2 text-destructive cursor-pointer">
                     <LogOut className="h-4 w-4" />
                     Sign Out
                   </DropdownMenuItem>
@@ -179,16 +185,26 @@ export const Navbar = () => {
             </div>
 
             {isAuthenticated ? (
-              <button
-                onClick={() => {
-                  logout();
-                  setMobileMenuOpen(false);
-                }}
-                className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium bg-destructive text-destructive-foreground rounded-lg"
-              >
-                <LogOut className="h-4 w-4" />
-                Sign Out ({user?.name?.split(' ')[0]})
-              </button>
+              <div className="space-y-2">
+                <Link
+                  to="/account"
+                  className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium bg-gradient-primary text-white rounded-lg"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Trophy className="h-4 w-4" />
+                  My Account
+                </Link>
+                <button
+                  onClick={() => {
+                    logout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium bg-destructive text-destructive-foreground rounded-lg"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign Out ({user?.name?.split(' ')[0]})
+                </button>
+              </div>
             ) : (
               <Link
                 to="/auth"

@@ -4,14 +4,17 @@ import { comicApi } from '@/lib/comicApi';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Home, List } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useReadingHistory } from '@/hooks/useReadingHistory';
+import { useLevel } from '@/hooks/useLevel';
 
 const ComicChapter = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [showNav, setShowNav] = useState(true);
   const { addToHistory } = useReadingHistory();
+  const { onReadChapter } = useLevel();
+  const xpGrantedRef = useRef<string | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ['comic-chapter', slug],
@@ -22,7 +25,7 @@ const ComicChapter = () => {
   // Extract comic slug from chapter slug (e.g., "kingdom-chapter-818" -> "kingdom")
   const comicSlug = slug?.replace(/-chapter-\d+.*$/, '') || '';
 
-  // Track reading history
+  // Track reading history and grant XP
   useEffect(() => {
     if (data?.title && comicSlug && slug) {
       addToHistory({
@@ -33,8 +36,14 @@ const ComicChapter = () => {
         lastChapter: data.title,
         lastChapterSlug: slug,
       });
+      
+      // Grant XP only once per chapter
+      if (xpGrantedRef.current !== slug) {
+        xpGrantedRef.current = slug;
+        onReadChapter();
+      }
     }
-  }, [data, comicSlug, slug, addToHistory]);
+  }, [data, comicSlug, slug, addToHistory, onReadChapter]);
 
   // Handle scroll to show/hide navigation
   useEffect(() => {

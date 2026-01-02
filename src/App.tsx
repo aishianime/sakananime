@@ -71,6 +71,7 @@ import Library from "./pages/Library";
 
 // Auth page
 import Auth from "./pages/Auth";
+import Account from "./pages/Account";
 
 const queryClient = new QueryClient();
 
@@ -173,7 +174,8 @@ const App = () => {
                 <Route path="/browse/completed" element={<UnifiedCompleted />} />
 
                 {/* Auth Route */}
-                <Route path="/auth" element={<Auth />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/account" element={<Account />} />
 
                 {/* Aliases (avoid 404 for old/expected URLs) */}
                 <Route path="/history" element={<Navigate to="/library" replace />} />

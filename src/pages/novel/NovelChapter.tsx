@@ -5,8 +5,9 @@ import { LoadingSkeleton } from '@/components/LoadingSkeleton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight, Home, List, Settings, Minus, Plus } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useReadingHistory } from '@/hooks/useReadingHistory';
+import { useLevel } from '@/hooks/useLevel';
 
 const NovelChapter = () => {
   const { novelSlug, chapterSlug, slug, extra } = useParams<{ novelSlug?: string; chapterSlug?: string; slug?: string; extra?: string }>();
@@ -14,6 +15,8 @@ const NovelChapter = () => {
   const [fontSize, setFontSize] = useState(18);
   const [showSettings, setShowSettings] = useState(false);
   const { addToHistory } = useReadingHistory();
+  const { onReadChapter } = useLevel();
+  const xpGrantedRef = useRef<string | null>(null);
 
   // Handle multiple route formats including /novel/read/:novelSlug/:extra/:chapterSlug
   const isSlugOnlyRoute = !!slug && !novelSlug;
@@ -42,9 +45,11 @@ const NovelChapter = () => {
     localStorage.setItem('novel-font-size', String(fontSize));
   }, [fontSize]);
 
-  // Track reading history
+  // Track reading history and grant XP
   useEffect(() => {
     if (data?.title && (novelSlug || slug)) {
+      const chapterKey = `${effectiveNovelSlug}-${effectiveChapterSlug}`;
+      
       addToHistory({
         type: 'novel',
         slug: effectiveNovelSlug || slug || '',
@@ -53,8 +58,14 @@ const NovelChapter = () => {
         lastChapter: data.title,
         lastChapterSlug: effectiveChapterSlug || slug || '',
       });
+      
+      // Grant XP only once per chapter
+      if (xpGrantedRef.current !== chapterKey) {
+        xpGrantedRef.current = chapterKey;
+        onReadChapter();
+      }
     }
-  }, [data, novelSlug, chapterSlug, slug, effectiveNovelSlug, effectiveChapterSlug, addToHistory]);
+  }, [data, novelSlug, chapterSlug, slug, effectiveNovelSlug, effectiveChapterSlug, addToHistory, onReadChapter]);
 
   if (isLoading) return <LoadingSkeleton />;
 
