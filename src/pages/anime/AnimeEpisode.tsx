@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Home } from 'lucide-react';
 import { animeApi, AnimeEpisodeData, ServerQuality } from '@/lib/animeApi';
@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useReadingHistory } from '@/hooks/useReadingHistory';
+import { useLevel } from '@/hooks/useLevel';
 
 export default function AnimeEpisode() {
   const { slug } = useParams<{ slug: string }>();
@@ -16,6 +17,8 @@ export default function AnimeEpisode() {
   const [selectedQuality, setSelectedQuality] = useState('');
   const [loadingServer, setLoadingServer] = useState(false);
   const { addToHistory } = useReadingHistory();
+  const { onWatchEpisode } = useLevel();
+  const xpGrantedRef = useRef<string | null>(null);
 
   useEffect(() => {
     const fetchEpisode = async () => {
@@ -43,7 +46,7 @@ export default function AnimeEpisode() {
     fetchEpisode();
   }, [slug]);
 
-  // Track reading history when episode loads
+  // Track reading history when episode loads and grant XP
   useEffect(() => {
     if (episode && slug) {
       // Extract episode number from title
@@ -58,8 +61,14 @@ export default function AnimeEpisode() {
         lastEpisode: episodeNum,
         lastEpisodeId: slug,
       });
+      
+      // Grant XP only once per episode
+      if (xpGrantedRef.current !== slug) {
+        xpGrantedRef.current = slug;
+        onWatchEpisode();
+      }
     }
-  }, [episode, slug, addToHistory]);
+  }, [episode, slug, addToHistory, onWatchEpisode]);
 
   const handleServerChange = async (serverId: string) => {
     try {
