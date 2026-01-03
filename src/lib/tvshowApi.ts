@@ -101,67 +101,67 @@ export interface TvShowScheduleResponse {
 
 export const tvshowApi = {
   getTvShows: async (page: number = 1): Promise<TvShowListResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/tvshow?page=${page}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/tvshow?page=${page}`);
     return response.json();
   },
 
   getOthers: async (page: number = 1): Promise<TvShowListResponse> => {
-    const response = await fetch(b`${BASE_URL}/anime/winbu/others?page=${page}`));
+    const response = await fetch(b`${BASE_URL}/anime/winbu/others?page=${page}`);
     return response.json();
   },
 
   getSeries: async (page: number = 1): Promise<TvShowListResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/series?page=${page}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/series?page=${page}`);
     return response.json();
   },
 
   getFilms: async (page: number = 1): Promise<TvShowListResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/film?page=${page}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/film?page=${page}`);
     return response.json();
   },
 
   getFilmDetail: async (id: string): Promise<TvShowDetailResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/film/${id}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/film/${id}`);
     return response.json();
   },
 
   getSeriesDetail: async (id: string): Promise<TvShowDetailResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/series/${id}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/series/${id}`);
     return response.json();
   },
 
   getEpisode: async (id: string): Promise<TvShowEpisodeResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/episode/${id}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/episode/${id}`);
     return response.json();
   },
 
   search: async (keyword: string, page: number = 1): Promise<TvShowListResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/search?q=${encodeURIComponent(keyword)}&page=${page}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/search?q=${encodeURIComponent(keyword)}&page=${page}`);
     return response.json();
   },
 
   getGenres: async (): Promise<TvShowGenresResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/genres`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/genres`);
     return response.json();
   },
 
   getByGenre: async (slug: string, page: number = 1): Promise<TvShowListResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/genre/${slug}?page=${page}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/genre/${slug}?page=${page}`);
     return response.json();
   },
 
   getAllReverse: async (page: number = 1): Promise<TvShowListResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/all-anime-reverse?page=${page}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/all-anime-reverse?page=${page}`);
     return response.json();
   },
 
   getHome: async (): Promise<TvShowHomeResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/home`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/home`);
     return response.json();
   },
 
   getSchedule: async (day: string): Promise<TvShowScheduleResponse> => {
-    const response = await fetch(`${BASE_URL}/anime/winbu/schedule?day=${day}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/schedule?day=${day}`);
     return response.json();
   },
 
@@ -171,7 +171,7 @@ export const tvshowApi = {
     if (status) params.append('status', status);
     if (type) params.append('type', type);
     const queryString = params.toString();
-    const response = await fetch(`${BASE_URL}/anime/winbu/list${queryString ? `?${queryString}` : ''}`));
+    const response = await fetch(`${BASE_URL}/anime/winbu/list${queryString ? `?${queryString}` : ''}`);
     return response.json();
   },
 };
