@@ -6,13 +6,19 @@ import TvShowCard from '@/components/TvShowCard';
 import { LoadingGrid } from '@/components/LoadingSkeleton';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ChevronLeft, ChevronRight, Tv, Film, List, Shuffle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Tv, Film, List, Shuffle, Calendar, Filter } from 'lucide-react';
 
 const TvShowHome = () => {
   const [tvshowPage, setTvshowPage] = useState(1);
   const [seriesPage, setSeriesPage] = useState(1);
   const [filmsPage, setFilmsPage] = useState(1);
   const [othersPage, setOthersPage] = useState(1);
+
+  // Fetch home data for spotlight/featured content
+  const { data: homeData, isLoading: homeLoading } = useQuery({
+    queryKey: ['tvshow-home'],
+    queryFn: () => tvshowApi.getHome(),
+  });
 
   const { data: tvshowData, isLoading: tvshowLoading } = useQuery({
     queryKey: ['tvshows', tvshowPage],
@@ -33,6 +39,8 @@ const TvShowHome = () => {
     queryKey: ['tvshow-others', othersPage],
     queryFn: () => tvshowApi.getOthers(othersPage),
   });
+
+  const spotlightItems = homeData?.data?.spotlight || homeData?.data?.trending || homeData?.data?.popular || [];
 
   const renderPagination = (
     currentPage: number,
@@ -76,7 +84,17 @@ const TvShowHome = () => {
             <Tv className="w-8 h-8 text-primary" />
             TV Shows
           </h1>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Link to="/tvshow/schedule">
+              <Button variant="outline" size="sm">
+                <Calendar className="w-4 h-4 mr-2" /> Schedule
+              </Button>
+            </Link>
+            <Link to="/tvshow/list">
+              <Button variant="outline" size="sm">
+                <Filter className="w-4 h-4 mr-2" /> Filter
+              </Button>
+            </Link>
             <Link to="/tvshow/genres">
               <Button variant="outline" size="sm">
                 <List className="w-4 h-4 mr-2" /> Genres
@@ -89,6 +107,18 @@ const TvShowHome = () => {
             </Link>
           </div>
         </div>
+
+        {/* Spotlight Section */}
+        {!homeLoading && spotlightItems.length > 0 && (
+          <div className="mb-10">
+            <h2 className="text-xl font-semibold text-foreground mb-4">Featured</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              {spotlightItems.slice(0, 6).map((show, index) => (
+                <TvShowCard key={show.id || index} show={show} type="series" />
+              ))}
+            </div>
+          </div>
+        )}
 
         <Tabs defaultValue="tvshow" className="w-full">
           <TabsList className="grid w-full grid-cols-4 mb-8">
