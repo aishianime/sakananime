@@ -16,13 +16,13 @@ const ORDER_OPTIONS = [
 ];
 
 const STATUS_OPTIONS = [
-  { value: '', label: 'All Status' },
+  { value: 'all', label: 'All Status' },
   { value: 'ongoing', label: 'Ongoing' },
   { value: 'completed', label: 'Completed' },
 ];
 
 const TYPE_OPTIONS = [
-  { value: '', label: 'All Types' },
+  { value: 'all', label: 'All Types' },
   { value: 'tv', label: 'TV' },
   { value: 'movie', label: 'Movie' },
   { value: 'ova', label: 'OVA' },
@@ -32,12 +32,12 @@ const TYPE_OPTIONS = [
 
 const TvShowList = () => {
   const [order, setOrder] = useState('latest');
-  const [status, setStatus] = useState('');
-  const [type, setType] = useState('');
+  const [status, setStatus] = useState('all');
+  const [type, setType] = useState('all');
 
   const { data, isLoading } = useQuery({
     queryKey: ['tvshow-list', order, status, type],
-    queryFn: () => tvshowApi.getList(order, status || undefined, type || undefined),
+    queryFn: () => tvshowApi.getList(order, status === 'all' ? undefined : status, type === 'all' ? undefined : type),
   });
 
   const showList = data?.data?.animeList || data?.data?.list || [];
