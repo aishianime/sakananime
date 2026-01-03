@@ -9,22 +9,23 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Search, TrendingUp, Clock, BookOpen, Sparkles } from 'lucide-react';
 import { useState } from 'react';
+import { ErrorState } from '@/components/ErrorState';
 
 const NovelHome = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
-  const { data: homeData, isLoading: homeLoading } = useQuery({
+  const { data: homeData, isLoading: homeLoading, isError: homeError, refetch: refetchHome, isFetching: homeFetching } = useQuery({
     queryKey: ['novel-home'],
     queryFn: novelApi.getHome,
   });
 
-  const { data: popularData, isLoading: popularLoading } = useQuery({
+  const { data: popularData, isLoading: popularLoading, isError: popularError, refetch: refetchPopular, isFetching: popularFetching } = useQuery({
     queryKey: ['novel-popular'],
     queryFn: novelApi.getPopular,
   });
 
-  const { data: latestData, isLoading: latestLoading } = useQuery({
+  const { data: latestData, isLoading: latestLoading, isError: latestError, refetch: refetchLatest, isFetching: latestFetching } = useQuery({
     queryKey: ['novel-latest'],
     queryFn: novelApi.getLatest,
   });
@@ -35,6 +36,13 @@ const NovelHome = () => {
       navigate(`/novel/search/${searchQuery}`);
     }
   };
+
+  const handleRetryAll = () => {
+    refetchHome();
+    refetchPopular();
+    refetchLatest();
+  };
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -66,6 +74,18 @@ const NovelHome = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
+        {/* Show global error if all queries failed */}
+        {homeError && popularError && latestError && (
+          <div className="mb-8">
+            <ErrorState
+              title="Unable to Load Novels"
+              message="We couldn't fetch the novel data. Please check your connection and try again."
+              onRetry={handleRetryAll}
+              isRetrying={homeFetching || popularFetching || latestFetching}
+            />
+          </div>
+        )}
+
         {/* Quick Links */}
         <div className="flex flex-wrap gap-2 mb-8">
           <Link to="/novel/genres">

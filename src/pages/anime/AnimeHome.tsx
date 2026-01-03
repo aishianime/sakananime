@@ -1,36 +1,45 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Flame, Tv, CheckCircle2 } from 'lucide-react';
+import { ChevronRight, Flame, CheckCircle2 } from 'lucide-react';
 import { animeApi, AnimeCard as AnimeCardType } from '@/lib/animeApi';
 import { AnimeCard } from '@/components/AnimeCard';
 import { LoadingGrid } from '@/components/LoadingSkeleton';
 import { Button } from '@/components/ui/button';
+import { ErrorState } from '@/components/ErrorState';
+import { useQuery } from '@tanstack/react-query';
 
 export default function AnimeHome() {
-  const [ongoing, setOngoing] = useState<AnimeCardType[]>([]);
-  const [completed, setCompleted] = useState<AnimeCardType[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { 
+    data: homeData, 
+    isLoading: homeLoading, 
+    isError: homeError, 
+    refetch: refetchHome,
+    isFetching: homeFetching 
+  } = useQuery({
+    queryKey: ['anime-home'],
+    queryFn: () => animeApi.getHome(),
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [homeData, completedData] = await Promise.all([
-          animeApi.getHome(),
-          animeApi.getCompleted(1),
-        ]);
+  const { 
+    data: completedData, 
+    isLoading: completedLoading, 
+    isError: completedError, 
+    refetch: refetchCompleted,
+    isFetching: completedFetching 
+  } = useQuery({
+    queryKey: ['anime-completed', 1],
+    queryFn: () => animeApi.getCompleted(1),
+  });
 
-        setOngoing(homeData.data?.ongoing?.animeList?.slice(0, 12) || []);
-        setCompleted(completedData.data?.animeList?.slice(0, 8) || []);
-      } catch (error) {
-        console.error('Error fetching anime home data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const ongoing = homeData?.data?.ongoing?.animeList?.slice(0, 12) || [];
+  const completed = completedData?.data?.animeList?.slice(0, 8) || [];
+  const loading = homeLoading || completedLoading;
+  const hasError = homeError && completedError;
 
-    fetchData();
-  }, []);
+  const handleRetryAll = () => {
+    refetchHome();
+    refetchCompleted();
+  };
 
   return (
     <div className="min-h-screen">
@@ -47,6 +56,15 @@ export default function AnimeHome() {
       </section>
 
       <div className="container mx-auto px-4 py-8 space-y-12">
+        {/* Error State */}
+        {hasError && (
+          <ErrorState
+            title="Unable to Load Anime"
+            message="We couldn't fetch the anime data. Please check your connection and try again."
+            onRetry={handleRetryAll}
+            isRetrying={homeFetching || completedFetching}
+          />
+        )}
         {/* Ongoing Anime */}
         <section>
           <div className="flex items-center justify-between mb-6">

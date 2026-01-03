@@ -7,6 +7,7 @@ import { LoadingGrid } from '@/components/LoadingSkeleton';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChevronLeft, ChevronRight, Tv, Film, List, Shuffle, Calendar, Filter } from 'lucide-react';
+import { ErrorState } from '@/components/ErrorState';
 
 const TvShowHome = () => {
   const [tvshowPage, setTvshowPage] = useState(1);
@@ -15,32 +16,42 @@ const TvShowHome = () => {
   const [othersPage, setOthersPage] = useState(1);
 
   // Fetch home data for spotlight/featured content
-  const { data: homeData, isLoading: homeLoading } = useQuery({
+  const { data: homeData, isLoading: homeLoading, isError: homeError, refetch: refetchHome, isFetching: homeFetching } = useQuery({
     queryKey: ['tvshow-home'],
     queryFn: () => tvshowApi.getHome(),
   });
 
-  const { data: tvshowData, isLoading: tvshowLoading } = useQuery({
+  const { data: tvshowData, isLoading: tvshowLoading, isError: tvshowError, refetch: refetchTvshow, isFetching: tvshowFetching } = useQuery({
     queryKey: ['tvshows', tvshowPage],
     queryFn: () => tvshowApi.getTvShows(tvshowPage),
   });
 
-  const { data: seriesData, isLoading: seriesLoading } = useQuery({
+  const { data: seriesData, isLoading: seriesLoading, isError: seriesError, refetch: refetchSeries, isFetching: seriesFetching } = useQuery({
     queryKey: ['tvshow-series', seriesPage],
     queryFn: () => tvshowApi.getSeries(seriesPage),
   });
 
-  const { data: filmsData, isLoading: filmsLoading } = useQuery({
+  const { data: filmsData, isLoading: filmsLoading, isError: filmsError, refetch: refetchFilms, isFetching: filmsFetching } = useQuery({
     queryKey: ['tvshow-films', filmsPage],
     queryFn: () => tvshowApi.getFilms(filmsPage),
   });
 
-  const { data: othersData, isLoading: othersLoading } = useQuery({
+  const { data: othersData, isLoading: othersLoading, isError: othersError, refetch: refetchOthers, isFetching: othersFetching } = useQuery({
     queryKey: ['tvshow-others', othersPage],
     queryFn: () => tvshowApi.getOthers(othersPage),
   });
 
   const spotlightItems = homeData?.data?.spotlight || homeData?.data?.trending || homeData?.data?.popular || [];
+  const hasAllErrors = tvshowError && seriesError && filmsError && othersError;
+  const isAnyFetching = tvshowFetching || seriesFetching || filmsFetching || othersFetching;
+
+  const handleRetryAll = () => {
+    refetchHome();
+    refetchTvshow();
+    refetchSeries();
+    refetchFilms();
+    refetchOthers();
+  };
 
   const renderPagination = (
     currentPage: number,
@@ -107,6 +118,16 @@ const TvShowHome = () => {
             </Link>
           </div>
         </div>
+
+        {/* Error State */}
+        {hasAllErrors && (
+          <ErrorState
+            title="Unable to Load TV Shows"
+            message="We couldn't fetch the TV show data. Please check your connection and try again."
+            onRetry={handleRetryAll}
+            isRetrying={isAnyFetching}
+          />
+        )}
 
         {/* Spotlight Section */}
         {!homeLoading && spotlightItems.length > 0 && (
