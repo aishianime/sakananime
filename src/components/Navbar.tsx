@@ -32,6 +32,7 @@ export const Navbar = () => {
     { to: '/anime', label: 'Anime' },
     { to: '/comic', label: 'Comic' },
     { to: '/novel', label: 'Novel' },
+    { to: '/news', label: 'berita' },
     { to: '/tvshow', label: 'TV Show' },
   ];
 
