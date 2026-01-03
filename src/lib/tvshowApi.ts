@@ -1,4 +1,4 @@
-import { API_CONFIG, buildApiUrl } from './config';
+import { API_CONFIG, buildApiUrl } from './src/lib/config';
 
 export interface TvShowItem {
   id: string;
