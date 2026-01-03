@@ -9,7 +9,7 @@ interface TvShowCardProps {
 }
 
 const TvShowCard = ({ show, type = 'series' }: TvShowCardProps) => {
-  const detailPath = type === 'film' ? `/tvshow/film/${show.id || show.slug}` : `/tvshow/series/${show.id || show.slug}`;
+  const detailPath = type === 'film' ? `/tvshow/film/${show.id || show.id}` : `/tvshow/series/${show.id || show.id}`;
 
   return (
     <Link to={detailPath} className="group block">
