@@ -74,6 +74,8 @@ import TvShowSearch from "./pages/tvshow/TvShowSearch";
 import TvShowGenres from "./pages/tvshow/TvShowGenres";
 import TvShowByGenre from "./pages/tvshow/TvShowByGenre";
 import TvShowAll from "./pages/tvshow/TvShowAll";
+import TvShowSchedule from "./pages/tvshow/TvShowSchedule";
+import TvShowList from "./pages/tvshow/TvShowList";
 
 // Library page
 import Library from "./pages/Library";
@@ -186,7 +188,7 @@ const App = () => {
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/account" element={<Account />} />
 
-                {/* TV Show Routes */}
+{/* TV Show Routes */}
                 <Route path="/tvshow" element={<TvShowHome />} />
                 <Route path="/tvshow/film/:id" element={<TvShowDetail type="film" />} />
                 <Route path="/tvshow/series/:id" element={<TvShowDetail type="series" />} />
@@ -195,6 +197,8 @@ const App = () => {
                 <Route path="/tvshow/genres" element={<TvShowGenres />} />
                 <Route path="/tvshow/genre/:slug" element={<TvShowByGenre />} />
                 <Route path="/tvshow/all" element={<TvShowAll />} />
+                <Route path="/tvshow/schedule" element={<TvShowSchedule />} />
+                <Route path="/tvshow/list" element={<TvShowList />} />
 
                 {/* Aliases (avoid 404 for old/expected URLs) */}
                 <Route path="/history" element={<Navigate to="/library" replace />} />

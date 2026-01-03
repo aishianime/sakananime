@@ -70,6 +70,35 @@ export interface TvShowGenresResponse {
   };
 }
 
+export interface TvShowHomeData {
+  spotlight?: TvShowItem[];
+  recent?: TvShowItem[];
+  popular?: TvShowItem[];
+  trending?: TvShowItem[];
+}
+
+export interface TvShowHomeResponse {
+  success: boolean;
+  data: TvShowHomeData;
+}
+
+export interface TvShowScheduleItem {
+  id: string;
+  title: string;
+  slug: string;
+  poster: string;
+  time?: string;
+  episode?: string;
+}
+
+export interface TvShowScheduleResponse {
+  success: boolean;
+  data: {
+    schedule?: TvShowScheduleItem[];
+    list?: TvShowScheduleItem[];
+  };
+}
+
 export const tvshowApi = {
   getTvShows: async (page: number = 1): Promise<TvShowListResponse> => {
     const response = await fetch(buildApiUrl(`/anime/winbu/tvshow?page=${page}`));
@@ -123,6 +152,26 @@ export const tvshowApi = {
 
   getAllReverse: async (page: number = 1): Promise<TvShowListResponse> => {
     const response = await fetch(buildApiUrl(`/anime/winbu/all-anime-reverse?page=${page}`));
+    return response.json();
+  },
+
+  getHome: async (): Promise<TvShowHomeResponse> => {
+    const response = await fetch(buildApiUrl(`/anime/winbu/home`));
+    return response.json();
+  },
+
+  getSchedule: async (day: string): Promise<TvShowScheduleResponse> => {
+    const response = await fetch(buildApiUrl(`/anime/winbu/schedule?day=${day}`));
+    return response.json();
+  },
+
+  getList: async (order?: string, status?: string, type?: string): Promise<TvShowListResponse> => {
+    const params = new URLSearchParams();
+    if (order) params.append('order', order);
+    if (status) params.append('status', status);
+    if (type) params.append('type', type);
+    const queryString = params.toString();
+    const response = await fetch(buildApiUrl(`/anime/winbu/list${queryString ? `?${queryString}` : ''}`));
     return response.json();
   },
 };
