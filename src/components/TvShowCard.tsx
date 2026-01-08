@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { TvShowItem } from '@/lib/tvshowApi';
 import { Badge } from '@/components/ui/badge';
-import { Tv, Star } from 'lucide-react';
+import { Tv, Star, Play } from 'lucide-react';
 
 interface TvShowCardProps {
   show: TvShowItem;
@@ -9,14 +9,16 @@ interface TvShowCardProps {
 }
 
 const TvShowCard = ({ show, type = 'series' }: TvShowCardProps) => {
-  const detailPath = type === 'film' ? `/tvshow/film/${show.id || show.id}` : `/tvshow/series/${show.id || show.id}`;
+  const showType = show.type || type;
+  const detailPath = showType === 'film' ? `/tvshow/film/${show.id}` : `/tvshow/series/${show.id}`;
+  const imageUrl = show.poster || show.image || '/placeholder.svg';
 
   return (
     <Link to={detailPath} className="group block">
       <div className="relative overflow-hidden rounded-xl bg-card border border-border/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10 hover:border-primary/30">
         <div className="aspect-[2/3] relative overflow-hidden">
           <img
-            src={show.poster || '/placeholder.svg'}
+            src={imageUrl}
             alt={show.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             loading="lazy"
@@ -30,10 +32,17 @@ const TvShowCard = ({ show, type = 'series' }: TvShowCardProps) => {
             </Badge>
           )}
           
-          {show.rating && (
+          {show.rating && show.rating !== '-' && (
             <Badge className="absolute top-2 right-2 bg-accent/90 text-accent-foreground text-xs">
               <Star className="w-3 h-3 mr-1 fill-current" />
               {show.rating}
+            </Badge>
+          )}
+
+          {show.episode && (
+            <Badge className="absolute bottom-2 left-2 bg-background/90 text-foreground text-xs">
+              <Play className="w-3 h-3 mr-1" />
+              {show.episode}
             </Badge>
           )}
         </div>
@@ -44,6 +53,9 @@ const TvShowCard = ({ show, type = 'series' }: TvShowCardProps) => {
           </h3>
           {show.year && (
             <p className="text-xs text-muted-foreground">{show.year}</p>
+          )}
+          {show.time && (
+            <p className="text-xs text-muted-foreground">{show.time}</p>
           )}
           {show.status && (
             <Badge variant="outline" className="text-xs">

@@ -3,12 +3,15 @@ const BASE_URL = 'https://www.sankavollerei.com';
 export interface TvShowItem {
   id: string;
   title: string;
-  slug: string;
-  poster: string;
+  slug?: string;
+  poster?: string;
+  image?: string;
   type?: string;
   status?: string;
   rating?: string;
   year?: string;
+  episode?: string;
+  time?: string;
 }
 
 export interface TvShowDetailData {
@@ -40,8 +43,9 @@ export interface TvShowGenre {
 }
 
 export interface TvShowListResponse {
-  success: boolean;
-  data: {
+  status?: string;
+  success?: boolean;
+  data: TvShowItem[] | {
     animeList?: TvShowItem[];
     list?: TvShowItem[];
     pagination?: {
@@ -51,7 +55,30 @@ export interface TvShowListResponse {
       hasPrevPage: boolean;
     };
   };
+  pagination?: {
+    currentPage: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
 }
+
+// Helper to extract shows from response (handles both array and object formats)
+export const extractShows = (response?: TvShowListResponse): TvShowItem[] => {
+  if (!response?.data) return [];
+  if (Array.isArray(response.data)) return response.data;
+  return response.data.animeList || response.data.list || [];
+};
+
+// Helper to extract pagination from response
+export const extractPagination = (response?: TvShowListResponse) => {
+  if (!response) return undefined;
+  if (response.pagination) return response.pagination;
+  if (!Array.isArray(response.data) && response.data?.pagination) {
+    return response.data.pagination;
+  }
+  return undefined;
+};
 
 export interface TvShowDetailResponse {
   success: boolean;
