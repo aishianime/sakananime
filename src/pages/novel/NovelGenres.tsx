@@ -2,17 +2,31 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { novelApi } from '@/lib/novelApi';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
+import { ErrorState } from '@/components/ErrorState';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen } from 'lucide-react';
 
 const NovelGenres = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch, isFetching } = useQuery({
     queryKey: ['novel-genres'],
     queryFn: novelApi.getGenres,
   });
 
   if (isLoading) return <LoadingSkeleton />;
+
+  if (isError) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <ErrorState
+          title="Unable to Load Genres"
+          message="We couldn't fetch the novel genres. Please try again."
+          onRetry={refetch}
+          isRetrying={isFetching}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

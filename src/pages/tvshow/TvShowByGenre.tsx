@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { tvshowApi } from '@/lib/tvshowApi';
 import TvShowCard from '@/components/TvShowCard';
 import { LoadingGrid } from '@/components/LoadingSkeleton';
+import { ErrorState } from '@/components/ErrorState';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ChevronLeft, ChevronRight, Tag } from 'lucide-react';
 
@@ -11,16 +12,29 @@ const TvShowByGenre = () => {
   const { slug } = useParams<{ slug: string }>();
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch, isFetching } = useQuery({
     queryKey: ['tvshow-genre', slug, page],
     queryFn: () => tvshowApi.getByGenre(slug!, page),
     enabled: !!slug,
   });
 
-  if (isLoading) return <LoadingGrid />;
-
   const shows = data?.data?.animeList || data?.data?.list || [];
   const pagination = data?.data?.pagination;
+
+  if (isLoading) return <LoadingGrid />;
+
+  if (isError) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <ErrorState
+          title="Unable to Load Shows"
+          message="We couldn't fetch the shows for this genre. Please try again."
+          onRetry={refetch}
+          isRetrying={isFetching}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

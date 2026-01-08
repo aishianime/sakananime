@@ -2,18 +2,32 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { tvshowApi } from '@/lib/tvshowApi';
 import { LoadingGrid } from '@/components/LoadingSkeleton';
+import { ErrorState } from '@/components/ErrorState';
 import { Card, CardContent } from '@/components/ui/card';
 import { List, Tag } from 'lucide-react';
 
 const TvShowGenres = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch, isFetching } = useQuery({
     queryKey: ['tvshow-genres'],
     queryFn: () => tvshowApi.getGenres(),
   });
 
+  const genres = data?.data?.genres || [];
+
   if (isLoading) return <LoadingGrid />;
 
-  const genres = data?.data?.genres || [];
+  if (isError) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <ErrorState
+          title="Unable to Load Genres"
+          message="We couldn't fetch the genres. Please try again."
+          onRetry={refetch}
+          isRetrying={isFetching}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
