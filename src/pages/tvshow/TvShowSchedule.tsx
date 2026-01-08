@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { tvshowApi } from '@/lib/tvshowApi';
 import { LoadingGrid } from '@/components/LoadingSkeleton';
+import { ErrorState } from '@/components/ErrorState';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, Clock, ArrowLeft } from 'lucide-react';
@@ -13,7 +14,7 @@ const TvShowSchedule = () => {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
   const [selectedDay, setSelectedDay] = useState(today);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch, isFetching } = useQuery({
     queryKey: ['tvshow-schedule', selectedDay],
     queryFn: () => tvshowApi.getSchedule(selectedDay),
   });
@@ -50,6 +51,13 @@ const TvShowSchedule = () => {
 
         {isLoading ? (
           <LoadingGrid />
+        ) : isError ? (
+          <ErrorState
+            title="Unable to Load Schedule"
+            message="We couldn't fetch the schedule data. Please try again."
+            onRetry={refetch}
+            isRetrying={isFetching}
+          />
         ) : scheduleList.length === 0 ? (
           <div className="text-center py-16">
             <Calendar className="w-16 h-16 mx-auto text-muted-foreground mb-4" />

@@ -106,7 +106,7 @@ export const tvshowApi = {
   },
 
   getOthers: async (page: number = 1): Promise<TvShowListResponse> => {
-    const response = await fetch(b`${BASE_URL}/anime/winbu/others?page=${page}`);
+    const response = await fetch(`${BASE_URL}/anime/winbu/others?page=${page}`);
     return response.json();
   },
 

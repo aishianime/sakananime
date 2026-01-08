@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { tvshowApi } from '@/lib/tvshowApi';
 import TvShowCard from '@/components/TvShowCard';
 import { LoadingGrid } from '@/components/LoadingSkeleton';
+import { ErrorState } from '@/components/ErrorState';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
@@ -14,7 +15,7 @@ const TvShowSearch = () => {
   const page = parseInt(searchParams.get('page') || '1');
   const [searchInput, setSearchInput] = useState(keyword);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch, isFetching } = useQuery({
     queryKey: ['tvshow-search', keyword, page],
     queryFn: () => tvshowApi.search(keyword, page),
     enabled: !!keyword,
@@ -57,6 +58,13 @@ const TvShowSearch = () => {
 
         {isLoading ? (
           <LoadingGrid />
+        ) : isError ? (
+          <ErrorState
+            title="Search Failed"
+            message="We couldn't complete your search. Please try again."
+            onRetry={refetch}
+            isRetrying={isFetching}
+          />
         ) : shows.length > 0 ? (
           <>
             <p className="text-muted-foreground mb-4">

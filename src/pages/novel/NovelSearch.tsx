@@ -3,17 +3,31 @@ import { useParams } from 'react-router-dom';
 import { novelApi } from '@/lib/novelApi';
 import { NovelCard } from '@/components/NovelCard';
 import { LoadingSkeleton } from '@/components/LoadingSkeleton';
+import { ErrorState } from '@/components/ErrorState';
 
 const NovelSearch = () => {
   const { keyword } = useParams<{ keyword: string }>();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch, isFetching } = useQuery({
     queryKey: ['novel-search', keyword],
     queryFn: () => novelApi.search(keyword!),
     enabled: !!keyword,
   });
 
   if (isLoading) return <LoadingSkeleton />;
+
+  if (isError) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <ErrorState
+          title="Search Failed"
+          message="We couldn't complete your search. Please try again."
+          onRetry={refetch}
+          isRetrying={isFetching}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
