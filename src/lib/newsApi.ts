@@ -1,4 +1,4 @@
-const BASE_URL = 'https://www.sankavollerei.com';
+const BASE_URL = '';
 
 export interface NewsArticle {
   title: string;
