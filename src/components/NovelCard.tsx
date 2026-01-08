@@ -16,7 +16,7 @@ export const NovelCard = ({ title, slug, image, rating, latestChapter, cover }: 
   const imageUrl = cover?.url || image?.split(' ')[0] || image;
 
   return (
-    <Link to={`/novel/meionovel/detail/${slug}`} className="group block">
+    <Link to={`/novel/detail/${slug}`} className="group block">
       <div className="relative overflow-hidden rounded-xl bg-card shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02]">
         <div className="aspect-[3/4] overflow-hidden">
           <img
