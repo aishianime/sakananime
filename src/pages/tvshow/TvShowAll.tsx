@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { tvshowApi } from '@/lib/tvshowApi';
+import { tvshowApi, extractShows, extractPagination } from '@/lib/tvshowApi';
 import TvShowCard from '@/components/TvShowCard';
 import { LoadingGrid } from '@/components/LoadingSkeleton';
 import { ErrorState } from '@/components/ErrorState';
@@ -15,8 +15,8 @@ const TvShowAll = () => {
     queryFn: () => tvshowApi.getAllReverse(page),
   });
 
-  const shows = data?.data?.animeList || data?.data?.list || [];
-  const pagination = data?.data?.pagination;
+  const shows = extractShows(data);
+  const pagination = extractPagination(data);
 
   if (isLoading) return <LoadingGrid />;
 

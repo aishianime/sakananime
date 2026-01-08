@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { tvshowApi } from '@/lib/tvshowApi';
+import { tvshowApi, extractShows, extractPagination } from '@/lib/tvshowApi';
 import TvShowCard from '@/components/TvShowCard';
 import { LoadingGrid } from '@/components/LoadingSkeleton';
 import { Button } from '@/components/ui/button';
@@ -162,8 +162,8 @@ const TvShowHome = () => {
               <LoadingGrid />
             ) : (
               <>
-                {renderGrid(tvshowData?.data?.animeList || tvshowData?.data?.list || [])}
-                {renderPagination(tvshowPage, setTvshowPage, tvshowData?.data?.pagination)}
+                {renderGrid(extractShows(tvshowData))}
+                {renderPagination(tvshowPage, setTvshowPage, extractPagination(tvshowData))}
               </>
             )}
           </TabsContent>
@@ -173,8 +173,8 @@ const TvShowHome = () => {
               <LoadingGrid />
             ) : (
               <>
-                {renderGrid(seriesData?.data?.animeList || seriesData?.data?.list || [])}
-                {renderPagination(seriesPage, setSeriesPage, seriesData?.data?.pagination)}
+                {renderGrid(extractShows(seriesData))}
+                {renderPagination(seriesPage, setSeriesPage, extractPagination(seriesData))}
               </>
             )}
           </TabsContent>
@@ -184,8 +184,8 @@ const TvShowHome = () => {
               <LoadingGrid />
             ) : (
               <>
-                {renderGrid(filmsData?.data?.animeList || filmsData?.data?.list || [], 'film')}
-                {renderPagination(filmsPage, setFilmsPage, filmsData?.data?.pagination)}
+                {renderGrid(extractShows(filmsData), 'film')}
+                {renderPagination(filmsPage, setFilmsPage, extractPagination(filmsData))}
               </>
             )}
           </TabsContent>
@@ -195,8 +195,8 @@ const TvShowHome = () => {
               <LoadingGrid />
             ) : (
               <>
-                {renderGrid(othersData?.data?.animeList || othersData?.data?.list || [])}
-                {renderPagination(othersPage, setOthersPage, othersData?.data?.pagination)}
+                {renderGrid(extractShows(othersData))}
+                {renderPagination(othersPage, setOthersPage, extractPagination(othersData))}
               </>
             )}
           </TabsContent>

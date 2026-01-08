@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { tvshowApi } from '@/lib/tvshowApi';
+import { tvshowApi, extractShows, extractPagination } from '@/lib/tvshowApi';
 import TvShowCard from '@/components/TvShowCard';
 import { LoadingGrid } from '@/components/LoadingSkeleton';
 import { ErrorState } from '@/components/ErrorState';
@@ -32,8 +32,8 @@ const TvShowSearch = () => {
     setSearchParams({ q: keyword, page: newPage.toString() });
   };
 
-  const shows = data?.data?.animeList || data?.data?.list || [];
-  const pagination = data?.data?.pagination;
+  const shows = extractShows(data);
+  const pagination = extractPagination(data);
 
   return (
     <div className="min-h-screen bg-background">

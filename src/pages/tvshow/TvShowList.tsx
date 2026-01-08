@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { tvshowApi } from '@/lib/tvshowApi';
+import { tvshowApi, extractShows } from '@/lib/tvshowApi';
 import TvShowCard from '@/components/TvShowCard';
 import { LoadingGrid } from '@/components/LoadingSkeleton';
 import { ErrorState } from '@/components/ErrorState';
@@ -41,7 +41,7 @@ const TvShowList = () => {
     queryFn: () => tvshowApi.getList(order, status === 'all' ? undefined : status, type === 'all' ? undefined : type),
   });
 
-  const showList = data?.data?.animeList || data?.data?.list || [];
+  const showList = extractShows(data);
 
   return (
     <div className="min-h-screen bg-background">
